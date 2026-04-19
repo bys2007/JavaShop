@@ -1,0 +1,273 @@
+You are designing JavaShop, a premium artisan coffee e-commerce website for an Indonesian local UMKM brand. Every design must feel luxurious, calm, and aesthetically refined — like a high-end specialty coffee brand, NOT a generic marketplace.
+
+═══════════════════════════════════════
+BRAND IDENTITY
+═══════════════════════════════════════
+Brand Name: JavaShop
+Brand Personality: Artisan, warm, sophisticated, trustworthy, local-premium
+Tagline: "Setiap cangkir, sebuah cerita." (Every cup, a story.)
+Target Audience: Indonesian coffee lovers aged 22–45, urban, middle to upper-middle class
+
+═══════════════════════════════════════
+COLOR SYSTEM
+═══════════════════════════════════════
+Primary Background (Light): #FAF7F2  (warm off-white, like cream paper)
+Primary Background (Dark): #140C05   (deep espresso)
+
+Surface / Card (Light): #F0E8D8      (soft warm beige)
+Surface / Card (Dark): #1E1109       (dark roast)
+
+Primary Text (Light): #1C0A00        (espresso black)
+Primary Text (Dark): #F0E8D8         (cream)
+
+Secondary Text (Light): #6B4C35     (warm brown-gray)
+Secondary Text (Dark): #A8886A      (warm tan)
+
+Accent Gold: #B8924A                 (warm antique gold — use for CTA, highlights, price, stars)
+Accent Gold Hover: #9A7735           (darker gold for hover)
+
+Accent Sage: #7A9468                 (muted olive-green — use sparingly for badges, in-stock, success)
+Border (Light): #E0D0BB              (warm light border)
+Border (Dark): #3A2516               (dark warm border)
+
+Error/Danger: #C0392B
+Success: #27664A
+
+USAGE RULES:
+- Never use pure #000000 or #FFFFFF — always use the warm alternatives
+- Gold accent (#B8924A) is used ONLY for: primary CTA buttons, prices, star ratings, active states, and key highlights
+- Sage accent (#7A9468) is used ONLY for: success states, "in stock" badges, and positive notifications
+- Maintain minimum 4.5:1 contrast ratio for all text
+
+═══════════════════════════════════════
+TYPOGRAPHY
+═══════════════════════════════════════
+Display / Hero Font: Cormorant Garamond (Semibold 600)
+  — Used for: hero headlines, brand name, section titles, product names on detail page
+  — Character: Elegant, editorial, high-contrast serif
+
+Heading Font: Cormorant Garamond (Medium 500)
+  — Used for: H1, H2, H3 headings throughout the site
+
+Body Font: DM Sans (Regular 400, Medium 500)
+  — Used for: all body copy, descriptions, labels, navigation, buttons, form fields
+  — Character: Clean, modern, highly legible
+
+Accent / Caption: DM Sans (Regular 400, Italic)
+  — Used for: captions, quotes, testimonials, timestamps
+
+TYPE SCALE:
+Display (Hero):     56px / line-height 1.1 / Cormorant Garamond 600
+H1:                 40px / line-height 1.2 / Cormorant Garamond 600
+H2:                 32px / line-height 1.25 / Cormorant Garamond 500
+H3:                 24px / line-height 1.3 / Cormorant Garamond 500
+H4:                 18px / line-height 1.4 / DM Sans 500
+Body Large:         16px / line-height 1.7 / DM Sans 400
+Body:               14px / line-height 1.6 / DM Sans 400
+Caption / Label:    12px / line-height 1.5 / DM Sans 400
+Button:             14px / line-height 1 / DM Sans 500 / letter-spacing 0.04em
+
+═══════════════════════════════════════
+SPACING & GRID
+═══════════════════════════════════════
+Grid: 12-column, 1440px max-width container, 80px horizontal padding (desktop), 20px (mobile)
+Column gap: 24px
+Section vertical padding: 80px (desktop), 48px (mobile)
+Component internal padding: 24px (cards), 16px (compact)
+Base spacing unit: 8px (use multiples: 8, 16, 24, 32, 40, 48, 64, 80)
+
+═══════════════════════════════════════
+COMPONENT DESIGN RULES
+═══════════════════════════════════════
+Border Radius:
+  — Buttons: 6px (slightly rounded, not pill)
+  — Cards: 12px
+  — Input fields: 8px
+  — Image containers: 12px (product) / 16px (hero/feature)
+  — Badges/Tags: 4px
+  — Modals: 16px
+
+Shadows:
+  — Card default: 0 2px 12px rgba(28,10,0,0.06)
+  — Card hover: 0 8px 32px rgba(28,10,0,0.12)
+  — Navbar: 0 1px 0 #E0D0BB (light mode)
+  — Modal: 0 24px 80px rgba(28,10,0,0.2)
+
+Buttons:
+  — Primary: bg #B8924A, text #FAF7F2, radius 6px, padding 14px 28px, DM Sans 500 14px, letter-spacing 0.04em
+  — Primary Hover: bg #9A7735, slight upward translate (-1px)
+  — Secondary: bg transparent, border 1.5px solid #B8924A, text #B8924A
+  — Ghost: bg transparent, text #6B4C35, underline on hover
+  — Danger: bg #C0392B, text #FAF7F2
+  — Disabled: bg #E0D0BB, text #A8886A, cursor not-allowed
+
+Form Fields:
+  — Border: 1.5px solid #E0D0BB
+  — Focus border: 1.5px solid #B8924A with glow shadow rgba(184,146,74,0.2)
+  — Placeholder color: #A8886A
+  — Label: DM Sans 500 12px, #6B4C35, uppercase, letter-spacing 0.08em
+  — Padding: 12px 16px
+
+Navigation:
+  — Height: 72px (desktop), 60px (mobile)
+  — Logo: Cormorant Garamond 600, 24px or SVG wordmark
+  — Links: DM Sans 400 14px, #1C0A00
+  — Active link: #B8924A with thin 2px bottom underline
+  — Sticky on scroll with white/cream background + shadow
+
+Product Cards:
+  — Image ratio: 4:5 (portrait) — shows product prominently
+  — Image container: rounded 12px, overflow hidden
+  — Hover on image: subtle zoom 1.03 scale, 0.4s ease
+  — Product name: Cormorant Garamond 500 18px
+  — Price: DM Sans 500 16px, color #B8924A
+  — Add to cart: small ghost button, appears on hover with fade-in
+  — Wishlist icon: heart outline top-right of image, filled on active
+
+═══════════════════════════════════════
+IMAGERY & ILLUSTRATION STYLE
+═══════════════════════════════════════
+Photography style: Warm, moody, artisan. Think: close-up coffee grains, steam rising from cups, hands holding mugs, kraft paper packaging, wood textures. Color temperature: warm (2700K–4000K feel)
+Image overlays: Subtle warm gradient overlay rgba(28,10,0,0.15) on hero images
+Icons: Use Phosphor Icons (thin/regular weight) — never use filled boxy icons
+Illustrations: None — photography only
+
+═══════════════════════════════════════
+ANIMATION GUIDELINES
+═══════════════════════════════════════
+Philosophy: Motion should feel like coffee — slow, warm, deliberate. Never jarring.
+
+Transitions:
+  — Page elements fade-in: opacity 0→1, translateY 16px→0, 0.5s ease-out
+  — Stagger for lists/grids: 80ms delay per item
+  — Hover states: 0.2s ease
+  — Page transitions: 0.3s fade
+
+Micro-interactions:
+  — Button press: scale 0.97, 0.1s
+  — Card hover: translateY -4px, shadow intensifies, 0.3s ease
+  — Image hover: scale 1.03, 0.4s ease
+  — Add to cart success: cart icon bounce + counter increment
+  — Form focus: gold border glow appears 0.2s ease
+  — Toast notification: slide in from bottom-right, auto-dismiss 3s
+
+Loading states:
+  — Skeleton screens with warm beige shimmer (not gray)
+  — Shimmer color: #E0D0BB to #F0E8D8
+
+═══════════════════════════════════════
+LAYOUT PERSONALITY
+═══════════════════════════════════════
+- Generous whitespace — let the design breathe
+- Asymmetric section layouts preferred (image left + text right, or vice versa)
+- Occasional large full-bleed sections with a warm photo background and overlay
+- Thin horizontal rules (#E0D0BB) to separate content — avoid boxes within boxes
+- Product images should be the hero of every product interaction
+- Admin pages: cleaner, more utilitarian but still on-brand — use the same colors, slightly denser layout
+- All pages must be designed at 1440px desktop width as primary breakpoint
+
+═══════════════════════════════════════
+INTERACTION & ELEMENT PURPOSE RULES
+═══════════════════════════════════════
+CRITICAL RULE: Every single interactive element in every page MUST have a clearly defined purpose, destination, and behavior. There must be NO decorative buttons, placeholder links, or dead-end interactions.
+
+──────────────────────────────────────
+MANDATORY ANNOTATION FORMAT
+──────────────────────────────────────
+For every button, link, icon, and interactive element you place in the design, annotate it using this format directly in the Figma frame as a small label or in component notes:
+
+  [Element Name] → ACTION → DESTINATION / RESULT
+
+Examples:
+  "Tambah ke Keranjang" → POST /cart/add → Cart updates, counter +1, success toast appears
+  "Lupa Kata Sandi?" → NAVIGATE → /auth/forgot-password
+  "♥ Wishlist icon" → TOGGLE → Adds/removes from wishlist, icon fills/unfills
+  "Halaman 2" (pagination) → NAVIGATE → /produk?page=2
+  "X" close button (modal) → CLOSE → Modal dismisses, overlay fades out
+
+──────────────────────────────────────
+NAVIGATION DESTINATION RULES
+──────────────────────────────────────
+Every link and button must resolve to one of these types:
+
+TYPE A — PAGE NAVIGATION: Routes to another page
+  Format: NAVIGATE → [page name / URL pattern]
+  Examples: NAVIGATE → /produk, NAVIGATE → /keranjang, NAVIGATE → /akun/pesanan
+
+TYPE B — ACTION: Triggers a system action (no full page change)
+  Format: ACTION → [what happens]
+  Examples: ACTION → Submit form + show loading, ACTION → Delete item + refresh list
+
+TYPE C — STATE CHANGE: Changes the current page's visible state
+  Format: STATE → [new state name]
+  Examples: STATE → Modal opens, STATE → Filter applied, STATE → Tab switches
+
+TYPE D — EXTERNAL: Opens outside JavaShop
+  Format: EXTERNAL → [destination]
+  Examples: EXTERNAL → Midtrans payment page, EXTERNAL → Biteship tracking page
+
+TYPE E — CONDITIONAL: Behavior depends on user state
+  Format: IF [condition] → [result A] / ELSE → [result B]
+  Examples: IF logged in → NAVIGATE /checkout / ELSE → NAVIGATE /login?redirect=/checkout
+
+──────────────────────────────────────
+ZERO DEAD ELEMENTS POLICY
+──────────────────────────────────────
+These elements are FORBIDDEN unless explicitly specified with a destination:
+- Any button labeled "Klik di sini", "Button", "CTA", or generic text
+- Any link that says "Selengkapnya" without a destination
+- Navigation menu items without a target page
+- Form submit buttons without a defined action + success/error state
+- Icon buttons (close, delete, edit, search) without defined behavior
+- "Lihat Semua" links without a destination page or filter
+- Social media icons without actual URLs or placeholder behavior
+
+──────────────────────────────────────
+REQUIRED STATES FOR EVERY ELEMENT
+──────────────────────────────────────
+Every interactive element must show at least these states in the design:
+
+BUTTONS: Default → Hover (lifted, color shift) → Active/Pressed (scale 0.97) → Loading (spinner) → Disabled (muted, no pointer)
+LINKS: Default → Hover (underline + color #B8924A) → Visited (slightly muted)
+FORM INPUTS: Empty → Focus (gold border + glow) → Filled → Error (red border + error message below) → Success (green checkmark)
+TOGGLES & CHECKBOXES: Off → On → Disabled
+CARDS (clickable): Default → Hover (lift + shadow) → Active
+IMAGE UPLOAD: Empty (dashed zone) → Drag-over (border turns gold) → Uploading (progress) → Success (preview) → Error (red message)
+
+──────────────────────────────────────
+NAVIGATION CONSISTENCY RULES
+──────────────────────────────────────
+- Every page that has a "back" or breadcrumb must show the exact previous page name, not generic "Kembali"
+- Breadcrumbs must reflect real URL hierarchy: Beranda / Produk / Arabika Gayo Premium
+- Active navigation state (current page) must always be visually distinct (gold underline, filled)
+- If a page requires login to access, show the redirect behavior: "Requires login → redirect to /login?redirect=[current-page]"
+- Every footer link must resolve to a real page or section anchor
+- The logo always navigates to Beranda (/)
+
+──────────────────────────────────────
+EMPTY & ERROR STATES ARE MANDATORY
+──────────────────────────────────────
+Every list, grid, or data table must include:
+1. POPULATED STATE: Normal data shown
+2. EMPTY STATE: Illustration + message + action button (never just blank)
+3. LOADING STATE: Skeleton screens (warm beige shimmer, not gray spinners)
+4. ERROR STATE: Error message + retry action
+
+These states are NOT optional decorations — they are required screens.
+
+──────────────────────────────────────
+FORM VALIDATION BEHAVIOR
+──────────────────────────────────────
+Every form field must specify:
+- What constitutes a valid input
+- What error message appears for invalid input (shown below the field in red #C0392B, DM Sans 12px)
+- Whether it is required (mark with * in label) or optional
+- What happens after successful form submission (redirect, toast, modal)
+
+Examples of required error messages to show:
+- Email invalid: "Format email tidak valid"
+- Required field empty: "Kolom ini wajib diisi"
+- Password too short: "Kata sandi minimal 8 karakter"
+- Passwords don't match: "Konfirmasi kata sandi tidak cocok"
+- File too large: "Ukuran file maksimal 5MB"
+- Out of stock variant selected: "Varian ini sedang habis"

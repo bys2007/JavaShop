@@ -1,0 +1,158 @@
+Create a comprehensive DESIGN SYSTEM PAGE for JavaShop — a premium artisan coffee e-commerce brand. This is a single, tall Figma page (width: 1440px, height: auto — as long as needed) that documents every visual token and component used across the entire website. It is a reference page for developers and designers, organized into clearly labeled sections with thin gold dividers between each.
+
+Layout: Single column centered at 1440px width, 80px horizontal padding, 64px vertical gap between sections. Background: #FAF7F2 (warm off-white).
+
+─────────────────────────────────────────
+SECTION 1 — LOGO & BRAND MARK
+─────────────────────────────────────────
+Show 3 logo variants side by side, each in a 280×160px card (rounded 12px, Surface color #F0E8D8):
+
+1. Primary Logo (light bg): Wordmark "JavaShop" in Cormorant Garamond 600, 36px, color #1C0A00. Above the wordmark, a small abstract logo mark: a stylized coffee bean outline (oval shape, single curved line bisecting it vertically) in #B8924A. Tagline below: "Setiap cangkir, sebuah cerita." in DM Sans 400 italic 12px, #6B4C35.
+
+2. Reversed Logo (dark bg #140C05): Same structure, wordmark in #F0E8D8, logo mark in #B8924A, tagline in #A8886A.
+
+3. Logo Mark only: Just the coffee bean icon, 64×64px, in #B8924A on #F0E8D8 background.
+
+Below the cards, add a label "Jangan gunakan logo dengan background warna lain selain yang ditentukan." in DM Sans 12px #A8886A.
+
+─────────────────────────────────────────
+SECTION 2 — COLOR PALETTE
+─────────────────────────────────────────
+Display 10 color swatches in a horizontal row. Each swatch is a rectangle 120×80px (rounded 8px) with:
+- The hex color as the fill
+- Hex code label below in DM Sans Mono 12px
+- Color name below hex in DM Sans 400 11px #6B4C35
+
+Swatches (left to right):
+1. #FAF7F2 — "Background Utama" (add thin #E0D0BB border since it's light)
+2. #F0E8D8 — "Surface / Card"
+3. #1C0A00 — "Teks Utama"
+4. #6B4C35 — "Teks Sekunder"
+5. #B8924A — "Aksen Gold" (add star ★ label as "Primary CTA")
+6. #9A7735 — "Aksen Gold Hover"
+7. #7A9468 — "Aksen Sage"
+8. #E0D0BB — "Border"
+9. #C0392B — "Error / Danger"
+10. #27664A — "Success"
+
+Below, show dark mode variants (same swatches but dark bg equivalents):
+1. #140C05, 2. #1E1109, 3. #F0E8D8, 4. #A8886A — with label "Dark Mode Equivalents"
+
+─────────────────────────────────────────
+SECTION 3 — TYPOGRAPHY SCALE
+─────────────────────────────────────────
+Show each type level as a live text example on a warm background. Left column: type spec label. Right column: live text sample. Use a thin left border in #B8924A for each row.
+
+Rows:
+1. Display | 56px / Cormorant Garamond 600 | Sample: "Kopi Terbaik Nusantara"
+2. H1 | 40px / Cormorant Garamond 600 | Sample: "Katalog Produk Kami"
+3. H2 | 32px / Cormorant Garamond 500 | Sample: "Pilihan Biji Kopi Premium"
+4. H3 | 24px / Cormorant Garamond 500 | Sample: "Arabika Gayo Aceh"
+5. H4 | 18px / DM Sans 500 | Sample: "Detail Produk"
+6. Body Large | 16px / DM Sans 400 | Sample: "Kopi arabika pilihan dari dataran tinggi Gayo..."
+7. Body | 14px / DM Sans 400 | Sample: "Tersedia dalam ukuran 100g, 250g, dan 500g."
+8. Caption | 12px / DM Sans 400 italic | Sample: "Dikirim dalam kemasan kedap udara"
+9. Button | 14px / DM Sans 500 / 0.04em spacing | Sample: "TAMBAH KE KERANJANG"
+10. Label Form | 12px / DM Sans 500 / 0.08em spacing UPPERCASE | Sample: "NAMA LENGKAP"
+
+─────────────────────────────────────────
+SECTION 4 — BUTTON VARIANTS
+─────────────────────────────────────────
+Show 3 rows of buttons. Each row has: Default state | Hover state | Disabled state, spaced 16px apart.
+
+Row 1 — Primary Button: bg #B8924A, text #FAF7F2, radius 6px, padding 14×28px
+Row 2 — Secondary Button: transparent bg, 1.5px border #B8924A, text #B8924A
+Row 3 — Ghost Button: transparent, no border, text #6B4C35, underline on hover
+Row 4 — Danger Button: bg #C0392B, text #FAF7F2
+
+Button text for all: "Beli Sekarang" | "Lihat Detail" | "Tambah ke Keranjang" (use appropriate text per context)
+
+─────────────────────────────────────────
+SECTION 5 — FORM COMPONENTS
+─────────────────────────────────────────
+Show 4 input field states side by side (each 280px wide):
+
+1. Default: label "EMAIL", placeholder "nama@email.com", border #E0D0BB
+2. Focus: border #B8924A, gold glow shadow rgba(184,146,74,0.2) 0 0 0 3px
+3. Filled: value "budi@javashop.id", border #E0D0BB
+4. Error: border #C0392B, error message below "Email tidak valid" in 12px #C0392B
+
+Also show: Dropdown select, Textarea (for notes/address), Checkbox (styled), Radio button (styled). All using the same design language.
+
+─────────────────────────────────────────
+SECTION 6 — PRODUCT CARD VARIANTS
+─────────────────────────────────────────
+Show 3 product card variants in a horizontal row:
+
+Card 1 — Default State (240×340px card, rounded 12px, bg #F0E8D8, shadow 0 2px 12px rgba(28,10,0,0.06)):
+- Top: product image area 240×192px, rounded-top 12px, warm product photo placeholder with #B8924A coffee icon overlay
+- Body padding 16px: product name "Arabika Gayo Premium" in Cormorant Garamond 500 18px, category badge "Arabika" in sage green 11px, price "Rp 89.000" in DM Sans 500 16px #B8924A, variant tags "100g | 250g | 500g" in small pill badges, wishlist heart icon (outline) top-right of image
+
+Card 2 — Hover State: elevated shadow, image slightly zoomed, ghost "Tambah ke Keranjang" button appears at bottom of image with fade overlay
+
+Card 3 — Out of Stock: image has 0.5 opacity grayscale overlay, "Habis" badge in coral #C0392B top-left of image, price grayed out, button disabled
+
+─────────────────────────────────────────
+SECTION 7 — BADGES & STATUS LABELS
+─────────────────────────────────────────
+Show all badge/tag variants in a horizontal wrap layout:
+
+Order status badges (rounded 4px, DM Sans 500 12px):
+- "Menunggu Pembayaran" — bg #FAEEDA, text #633806
+- "Diproses" — bg #E6F1FB, text #0C447C  
+- "Dikirim" — bg #E1F5EE, text #085041
+- "Selesai" — bg #EAF3DE, text #27664A
+- "Dibatalkan" — bg #FCEBEB, text #791F1F
+- "Pembayaran Ditolak" — bg #FCEBEB, text #C0392B
+
+Product badges:
+- "Terlaris" — bg #B8924A, text #FAF7F2
+- "Baru" — bg #1C0A00, text #FAF7F2
+- "Habis" — bg #E0D0BB, text #6B4C35
+- "Diskon 20%" — bg #C0392B, text #FAF7F2
+- "Stok Tersedia" — bg #EAF3DE, text #27664A
+
+─────────────────────────────────────────
+SECTION 8 — ICONS & SPACING
+─────────────────────────────────────────
+Icons: Show 16 Phosphor icons (thin weight) in a 4×4 grid, each 40×40px in a #F0E8D8 circle:
+ShoppingCart, Heart, User, MagnifyingGlass, Bell, Package, Truck, CreditCard, Star, ArrowRight, Check, X, ChatCircle, MapPin, Receipt, GiftCard
+
+Spacing scale: Show horizontal bars with labeled sizes: 8px, 16px, 24px, 32px, 40px, 48px, 64px, 80px — each as a gold (#B8924A) rectangle with DM Sans 12px label.
+
+─────────────────────────────────────────
+SECTION 9 — ANIMATION NOTES
+─────────────────────────────────────────
+Display as a styled reference table with 3 columns: Component | Property | Value
+
+Rows:
+- Page Elements | Entrance | opacity 0→1 + translateY 16px→0 / 0.5s ease-out
+- Grid Items | Stagger | 80ms delay per item
+- Card Hover | Transform | translateY -4px / 0.3s ease
+- Image Hover | Scale | 1.03 / 0.4s ease
+- Button Press | Scale | 0.97 / 0.1s
+- Button Hover | Transform | translateY -1px / 0.2s ease
+- Form Focus | Border + Glow | gold border + rgba(184,146,74,0.2) shadow / 0.2s ease
+- Toast | Entrance | slide from bottom-right / 0.3s ease-out / auto-dismiss 3s
+- Skeleton | Shimmer | #E0D0BB → #F0E8D8 wave / 1.5s infinite
+
+─────────────────────────────────────────
+SECTION 10 — GRID SYSTEM
+─────────────────────────────────────────
+Show a visual grid diagram: 1440px wide, 80px left/right padding, 12 columns with 24px gaps, filled with alternating warm beige columns. Label: "12 Kolom — 1440px max-width — 80px padding". Below, show mobile grid: 4 columns, 20px padding.
+
+─────────────────────────────────────────
+PAGE TITLE BAR
+─────────────────────────────────────────
+At the very top of the page, full-width header (1440px wide, 80px tall, bg #1C0A00):
+Left: "JavaShop — Design System v1.0" in Cormorant Garamond 600 24px, color #F0E8D8
+Right: "Dibuat untuk kebutuhan produksi · 2025" in DM Sans 12px #A8886A
+
+
+════════════════════════════════════════
+ANNOTATION & COMPONENT INSTRUCTIONS
+════════════════════════════════════════
+
+For every interactive element in every page, add a small Figma annotation label (sticky note style, yellow background) showing: element name → action → destination. Place annotations outside the frame boundary so they don't clutter the design but remain attached to their element.
+
+Every button, form field, and card must include a Figma component description note specifying: purpose, trigger event, expected outcome, and all visible states (default/hover/active/disabled/loading/error/success).

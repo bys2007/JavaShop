@@ -1,0 +1,257 @@
+Before designing any page in this batch, internalize this complete JavaShop sitemap. Every element you place must resolve to one of these destinations or actions. No orphan elements allowed.
+
+═══════════════════════════════════════
+JAVASHOP — SITEMAP & URL STRUCTURE
+═══════════════════════════════════════
+PUBLIC PAGES (accessible without login):
+  /                          → Beranda (Home)
+  /produk                    → Katalog Produk
+  /produk?kategori=[slug]    → Katalog filtered by category
+  /produk?q=[query]          → Katalog search results
+  /produk/[slug]             → Detail Produk
+  /login                     → Halaman Login
+  /daftar                    → Halaman Register
+  /auth/lupa-sandi           → Lupa Kata Sandi
+  /auth/reset-sandi          → Reset Kata Sandi
+
+CUSTOMER PRIVATE PAGES (requires login, redirect to /login?redirect=[page] if not):
+  /keranjang                 → Keranjang Belanja
+  /checkout                  → Halaman Checkout
+  /checkout/pembayaran       → Halaman Pembayaran (Midtrans / upload bukti)
+  /pesanan/berhasil          → Order Success / Konfirmasi
+  /akun                      → Profil Saya
+  /akun/pesanan              → Riwayat Pesanan
+  /akun/pesanan/[order-id]   → Detail Pesanan & Tracking
+  /akun/wishlist             → Wishlist
+  /akun/ulasan               → Ulasan Saya
+  /akun/notifikasi           → Notifikasi
+  /akun/alamat               → Kelola Alamat
+  /akun/ubah-sandi           → Ubah Kata Sandi
+
+ADMIN PAGES (requires admin role):
+  /admin                     → Admin Dashboard
+  /admin/produk              → Daftar Produk
+  /admin/produk/tambah       → Form Tambah Produk
+  /admin/produk/[id]/edit    → Form Edit Produk
+  /admin/pesanan             → Daftar Pesanan
+  /admin/pesanan/[id]        → Detail Pesanan Admin
+  /admin/pembayaran          → Konfirmasi Pembayaran
+  /admin/voucher             → Daftar Voucher
+  /admin/pengguna            → Daftar Pengguna
+  /admin/ulasan              → Moderasi Ulasan
+  /admin/laporan             → Laporan Penjualan
+
+EXTERNAL SERVICES:
+  Midtrans payment page      → https://app.midtrans.com/...
+  Biteship tracking          → https://biteship.com/tracking/[resi]
+
+
+═══════════════════════════════════════
+BATCH PROMPT — 3 HALAMAN PEMBAYARAN & KONFIRMASI
+═══════════════════════════════════════
+
+Design 3 pages for JavaShop premium coffee e-commerce. Same design system: Cormorant Garamond headings, DM Sans body, #B8924A gold accent, #FAF7F2 warm background. All pages share the same navbar (refer to previous batch for navbar spec).
+
+NOTE: Login & Register pages sudah tercakup di batch "Complete Entry Pages". Batch ini hanya berisi halaman post-checkout.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 6 — PEMBAYARAN MIDTRANS (/checkout/pembayaran)
+Requires login. IF not logged in → NAVIGATE /login?redirect=/checkout
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Guide the user through completing payment after checkout. Show clear instructions, countdown urgency, and easy actions. This page appears AFTER checkout, while waiting for Midtrans payment to complete OR as the manual payment instruction page. Show both states as separate sections/frames.
+
+── STATE A — Midtrans Payment Pending (full page) ──
+Top: progress bar steps — "1 Keranjang" (completed ✓) → "2 Checkout" (completed ✓) → "3 Pembayaran" (active, gold)
+  Step 1 → NAVIGATE /keranjang
+  Step 2 → NAVIGATE /checkout
+
+Center card (max-width 600px, centered, rounded 16px, bg #F0E8D8, shadow 0 24px 80px rgba(28,10,0,0.12), padding 40px):
+  — Midtrans logo small at top center (24px height)
+  — Title: "Menunggu Pembayaran" H2 Cormorant Garamond 600 36px #1C0A00
+  — Order number: "#JVS-20251208-0042" DM Sans Mono 14px, bg #FAF7F2 rounded 6px padding 8px 16px, centered
+  — Payment method chosen: e.g. "BCA Virtual Account" with BCA logo icon
+
+  [Element: Virtual Account Number display]
+  Style: Large monospace "1234 5678 9012 3456" DM Sans Mono 600 24px #1C0A00, bg #FAF7F2 rounded 8px padding 16px
+  Adjacent: copy icon button
+
+  [Element: Copy VA number button]
+  Style: Phosphor Copy icon 20px, #B8924A, in small square button beside VA number
+  Behavior: → ACTION copy VA number to clipboard → tooltip "Tersalin!" appears 2 detik, icon briefly changes to checkmark
+  States: Default → Clicked (checkmark + "Tersalin!") → Returns to default after 2s
+  Annotation: 'ACTION → copy VA number to clipboard'
+
+  — Amount to pay: "Rp 298.000" Cormorant Garamond 600 36px #B8924A, centered
+  — Countdown timer: "Bayar sebelum" + clock icon + "23:45:12" in #C0392B countdown, DM Sans 500 20px
+    IF timer expires: card changes to expired state — "Waktu pembayaran habis" + "Buat Pesanan Baru" button → NAVIGATE /keranjang
+
+  — Instruction steps (numbered 1-4): small numbered circles (bg #B8924A, text #FAF7F2, 24px diameter) + instruction text DM Sans 14px #1C0A00
+    1. "Buka aplikasi mobile banking atau ATM BCA"
+    2. "Pilih menu Transfer > Virtual Account"
+    3. "Masukkan nomor Virtual Account di atas"
+    4. "Konfirmasi pembayaran dan simpan buktinya"
+
+  [Element: Tombol 'Saya Sudah Bayar']
+  Style: Secondary outline button, border 1.5px #B8924A, text #B8924A, full-width, 48px height
+  Behavior: → NAVIGATE /pesanan/berhasil
+  Annotation: 'NAVIGATE /pesanan/berhasil'
+
+  [Element: 'Batalkan Pesanan' ghost link]
+  Style: Ghost link, DM Sans 400 14px #6B4C35, underline on hover, centered below button
+  Behavior: → ACTION show confirm dialog "Batalkan pesanan ini? Pesanan yang dibatalkan tidak dapat dikembalikan." → IF confirmed: ACTION cancel order → NAVIGATE /akun/pesanan / IF cancelled: dismiss dialog
+  Annotation: 'ACTION → confirm dialog → cancel order → NAVIGATE /akun/pesanan'
+
+── STATE B — Manual Transfer Instructions (show as second frame beside State A) ──
+Same card layout, but for "Transfer Bank Manual" method:
+  — Show QRIS QR code image (200×200px, centered, rounded 12px border)
+  — Or bank transfer details displayed in clean data table style:
+    | Bank      | BCA                          |
+    | No. Rekening | 123-456-7890            |
+    | Atas Nama    | PT JavaShop Indonesia    |
+    | Jumlah       | Rp 298.000              |
+
+  [Element: Upload zone "Upload Bukti Pembayaran"]
+  Style: Dashed border zone, 2px dashed #E0D0BB, rounded 12px, padding 40px, cloud-up icon center
+  Text: "Seret file ke sini atau klik untuk pilih" DM Sans 14px #6B4C35 + "JPG, PNG · Maks 5MB" DM Sans 12px #A8886A
+  Behavior: → ACTION file picker opens → preview shows on select
+  States:
+    - Empty: Dashed zone, cloud icon
+    - Drag-over: border turns #B8924A, bg rgba(184,146,74,0.05)
+    - Uploading: progress bar inside zone
+    - Success: thumbnail preview 200×140px + "Berhasil diunggah" green badge + "Ganti File" ghost link
+    - Error: "Ukuran file maksimal 5MB" or "Format tidak didukung" in #C0392B
+  Annotation: 'ACTION → file picker → upload preview'
+
+  [Element: Tombol 'Kirim Bukti']
+  Style: Primary gold button, full-width, 52px height
+  Behavior: → ACTION upload image → Loading spinner → IF success: NAVIGATE /pesanan/berhasil / IF error: show error "Gagal mengunggah. Silakan coba lagi." in #C0392B
+  States: Default → Loading (spinner + "Mengunggah...") → Disabled (if no file selected, bg #E0D0BB)
+  Annotation: 'ACTION → upload proof → NAVIGATE /pesanan/berhasil'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 7 — ORDER SUCCESS / KONFIRMASI PESANAN (/pesanan/berhasil)
+Requires login.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Confirm that the order was successfully created. Give the user immediate next steps (track order or continue shopping). Celebrate the purchase.
+
+Full centered layout, max-width 640px, vertically centered on page, padding 48px.
+
+Top: Large animated checkmark circle (80px diameter, stroke #B8924A 3px, filled circle bg #EAF3DE). Subtle entrance animation: scale 0→1 with bounce.
+
+Heading: "Pesanan Berhasil Dibuat!" H1 Cormorant Garamond 600 40px #1C0A00, centered, margin-top 24px.
+Subheading: "Terima kasih telah berbelanja di JavaShop. Kami akan segera memproses pesanan Anda." DM Sans 400 16px #6B4C35, centered, max-width 480px.
+
+Order summary card (rounded 16px, bg #F0E8D8, padding 32px, width 100%, margin-top 32px, shadow 0 2px 12px rgba(28,10,0,0.06)):
+  — Order number: "#JVS-20251208-0042" DM Sans Mono 600 16px #1C0A00
+  — Status badge: "Menunggu Pembayaran" badge bg #FAEEDA text #633806, rounded 4px
+  — Divider #E0D0BB
+  — 2-column detail grid:
+    Tanggal Pesan: "8 Desember 2025, 14:32 WIB"
+    Metode Bayar: "BCA Virtual Account"
+    Total: "Rp 298.000" #B8924A
+    Estimasi Tiba: "10–12 Desember 2025"
+  — Divider
+  — Ordered items list (compact): each row: small thumbnail 48×48px rounded 6px + name DM Sans 500 14px + variant DM Sans 12px #6B4C35 + qty × price
+
+Two CTA buttons stacked (margin-top 32px, full-width max-width 320px centered):
+
+  [Element: Tombol 'Lacak Pesanan']
+  Style: Primary gold button, full-width, 52px, with arrow icon right
+  Behavior: → NAVIGATE /akun/pesanan/[order-id]
+  States: Default → Hover (bg #9A7735)
+  Annotation: 'NAVIGATE /akun/pesanan/[order-id]'
+
+  [Element: Tombol 'Lanjut Belanja']
+  Style: Ghost button, text #6B4C35, underline on hover, margin-top 12px
+  Behavior: → NAVIGATE /produk
+  Annotation: 'NAVIGATE /produk'
+
+Bottom text: "Konfirmasi pesanan dikirim ke email Anda" + email address "budi@email.com" DM Sans 12px #6B4C35, centered, margin-top 24px.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 8 — ORDER DETAIL & TRACKING (/akun/pesanan/[order-id])
+Requires login.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Show complete order details, payment status, and real-time delivery tracking. Give users clear actions based on current order status (confirm receipt, write review, etc.).
+
+Page title: "Detail Pesanan #JVS-20251208-0042" H1. Status badge beside title (colored per status — see Design System badges).
+Breadcrumb: "Akun / Riwayat Pesanan / Detail".
+  "Akun" → NAVIGATE /akun | "Riwayat Pesanan" → NAVIGATE /akun/pesanan | Current non-clickable
+
+THREE-COLUMN LAYOUT (40 / 32 / 28 split):
+
+COLUMN LEFT — Order Items:
+Card (rounded 12px, bg #F0E8D8, padding 24px, shadow 0 2px 12px rgba(28,10,0,0.06)):
+"Item Pesanan" subheading DM Sans 500 16px. List each item: thumbnail 64×64px rounded 8px + name Cormorant Garamond 500 16px (→ NAVIGATE /produk/[slug] on click) + variant DM Sans 12px #6B4C35 + qty + subtotal.
+Divider.
+Cost breakdown: Subtotal produk | Ongkir (courier name + service) | Diskon Voucher (if any) | Total Pembayaran in DM Sans 500, total in Cormorant Garamond 600 24px #B8924A bold.
+
+COLUMN MIDDLE — Tracking Timeline:
+Card (rounded 12px, bg #F0E8D8, padding 24px):
+"Status Pengiriman" subheading.
+Vertical stepper timeline — 5 steps with dots connected by vertical line:
+  1. ✓ "Pesanan Dibuat" — "8 Des 2025, 14:32" (completed, dot filled #B8924A)
+  2. ✓ "Pembayaran Dikonfirmasi" — "8 Des 2025, 15:10" (completed)
+  3. ✓ "Diproses" — "9 Des 2025, 09:00" (completed)
+  4. ● "Dalam Pengiriman" — "10 Des 2025, 11:30" (CURRENT — dot pulsing gold animation)
+  5. ○ "Pesanan Diterima" — pending (dot outline #E0D0BB, text #A8886A)
+Each step: dot 12px (filled #B8924A / outline #E0D0BB), DM Sans 500 14px label #1C0A00, timestamp DM Sans 400 12px #6B4C35.
+
+Below timeline: courier info card (bg #FAF7F2, rounded 8px, padding 16px):
+  JNE logo 24px + "JNE Reguler" DM Sans 500 14px + Resi "JNE123456789" DM Sans Mono 14px
+
+  [Element: Copy resi icon]
+  Style: Phosphor Copy 16px #B8924A, beside resi number
+  Behavior: → ACTION copy resi number to clipboard → tooltip "Tersalin!" 2s
+  Annotation: 'ACTION → copy resi to clipboard'
+
+  [Element: Tombol 'Cek Resi']
+  Style: Small secondary button, border #B8924A, DM Sans 12px
+  Behavior: → EXTERNAL open https://biteship.com/tracking/JNE123456789 in new tab
+  Annotation: 'EXTERNAL → Biteship tracking page (new tab)'
+
+COLUMN RIGHT — Info Cards (stacked, 16px gap):
+
+Card 1 "Alamat Pengiriman" (rounded 12px, bg #F0E8D8, padding 20px):
+  Recipient name DM Sans 500 14px bold + full address text DM Sans 400 14px + phone DM Sans 400 14px #6B4C35.
+
+Card 2 "Metode Pembayaran" (same style):
+  Payment method icon + name DM Sans 500 14px + amount DM Sans 500 14px #B8924A.
+
+Card 3 "Ringkasan Waktu" (same style):
+  Tanggal Pesan | Tanggal Bayar | Estimasi Tiba — each label DM Sans 12px #6B4C35, value DM Sans 400 14px.
+
+── CONDITIONAL ACTION BUTTONS (bottom of Column RIGHT) ──
+
+  [Element: Tombol 'Konfirmasi Penerimaan']
+  Show: IF status = "Dalam Pengiriman"
+  Style: Primary gold button, full-width, 48px
+  Behavior: → ACTION show confirm dialog "Konfirmasi bahwa pesanan sudah diterima? Setelah dikonfirmasi, dana akan diteruskan ke penjual." → IF confirmed: ACTION mark order as received → status updates to "Selesai" → "Tulis Ulasan" button appears / IF cancelled: dismiss
+  Annotation: 'ACTION → confirm receipt → status updates to Selesai'
+
+  [Element: Tombol 'Tulis Ulasan']
+  Show: IF status = "Selesai" AND has unreviewed items
+  Style: Secondary outline gold button, full-width, 48px
+  Behavior: → NAVIGATE /akun/ulasan#[order-id]
+  Annotation: 'NAVIGATE /akun/ulasan#[order-id]'
+
+  [Element: Tombol 'Beli Lagi']
+  Show: IF status = "Selesai"
+  Style: Ghost button, DM Sans 400 14px #6B4C35
+  Behavior: → ACTION re-add all items to cart → NAVIGATE /keranjang → toast "Produk ditambahkan ke keranjang!"
+  Annotation: 'ACTION → re-add items to cart → NAVIGATE /keranjang'
+
+
+════════════════════════════════════════
+ANNOTATION & COMPONENT INSTRUCTIONS
+════════════════════════════════════════
+
+For every interactive element in every page, add a small Figma annotation label (sticky note style, yellow background) showing: element name → action → destination. Place annotations outside the frame boundary so they don't clutter the design but remain attached to their element.
+
+Every button, form field, and card must include a Figma component description note specifying: purpose, trigger event, expected outcome, and all visible states (default/hover/active/disabled/loading/error/success).

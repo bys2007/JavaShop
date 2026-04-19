@@ -1,0 +1,483 @@
+Before designing any page in this batch, internalize this complete JavaShop sitemap. Every element you place must resolve to one of these destinations or actions. No orphan elements allowed.
+
+═══════════════════════════════════════
+JAVASHOP — SITEMAP & URL STRUCTURE
+═══════════════════════════════════════
+PUBLIC PAGES (accessible without login):
+  /                          → Beranda (Home)
+  /produk                    → Katalog Produk
+  /produk?kategori=[slug]    → Katalog filtered by category
+  /produk?q=[query]          → Katalog search results
+  /produk/[slug]             → Detail Produk
+  /login                     → Halaman Login
+  /daftar                    → Halaman Register
+  /auth/lupa-sandi           → Lupa Kata Sandi
+  /auth/reset-sandi          → Reset Kata Sandi
+
+CUSTOMER PRIVATE PAGES (requires login, redirect to /login?redirect=[page] if not):
+  /keranjang                 → Keranjang Belanja
+  /checkout                  → Halaman Checkout
+  /checkout/pembayaran       → Halaman Pembayaran (Midtrans / upload bukti)
+  /pesanan/berhasil          → Order Success / Konfirmasi
+  /akun                      → Profil Saya
+  /akun/pesanan              → Riwayat Pesanan
+  /akun/pesanan/[order-id]   → Detail Pesanan & Tracking
+  /akun/wishlist             → Wishlist
+  /akun/ulasan               → Ulasan Saya
+  /akun/notifikasi           → Notifikasi
+  /akun/alamat               → Kelola Alamat
+  /akun/ubah-sandi           → Ubah Kata Sandi
+
+ADMIN PAGES (requires admin role):
+  /admin                     → Admin Dashboard
+  /admin/produk              → Daftar Produk
+  /admin/produk/tambah       → Form Tambah Produk
+  /admin/produk/[id]/edit    → Form Edit Produk
+  /admin/pesanan             → Daftar Pesanan
+  /admin/pesanan/[id]        → Detail Pesanan Admin
+  /admin/pembayaran          → Konfirmasi Pembayaran
+  /admin/voucher             → Daftar Voucher
+  /admin/pengguna            → Daftar Pengguna
+  /admin/ulasan              → Moderasi Ulasan
+  /admin/laporan             → Laporan Penjualan
+
+EXTERNAL SERVICES:
+  Midtrans payment page      → https://app.midtrans.com/...
+  Biteship tracking          → https://biteship.com/tracking/[resi]
+
+
+═══════════════════════════════════════
+BATCH PROMPT — 5 HALAMAN ADMIN (SET 2)
+═══════════════════════════════════════
+
+Design 5 more admin panel pages for JavaShop. Same design system. Admin sidebar + topbar same as previous admin batch (refer to Batch Admin Set 1 for shared layout spec). All require admin role.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 21 — KONFIRMASI PEMBAYARAN (/admin/pembayaran)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Admin reviews uploaded payment proofs, confirms or rejects them. This is a high-priority queue — surface pending items urgently.
+
+Breadcrumb: "Admin / Konfirmasi Pembayaran" — "Admin" → NAVIGATE /admin
+
+Page title: "Konfirmasi Pembayaran" H1. Notification: "7 pembayaran menunggu konfirmasi" amber banner at top (bg #FAEEDA, text #633806, DM Sans 500 14px, rounded 8px, padding 12px 20px).
+
+  [Element: Filter tabs]
+  Options: "Menunggu (7)" | "Dikonfirmasi" | "Ditolak" | "Semua"
+  Style: Horizontal tab pills, DM Sans 500 14px
+  Behavior: → STATE payment cards list filters to selected status
+  States: Inactive → Active (gold underline)
+  Annotation: 'STATE → filter payments by status'
+
+PAYMENT CARDS LIST (stacked, each card rounded 12px, bg #F0E8D8, padding 24px, borderLeft 4px solid — amber #C77A00 if pending, green #27664A if confirmed, red #C0392B if rejected, 16px gap):
+
+Each pending payment card (3 columns inside):
+
+LEFT (1/3): Order info
+  — Order number "#JVS-20251208-0042" DM Sans Mono 14px bold → NAVIGATE /admin/pesanan/[id] on click
+  — Customer name DM Sans 500 14px
+  — Order date DM Sans 12px #6B4C35
+  — Order total "Rp 267.000" Cormorant Garamond 600 20px #B8924A
+
+MIDDLE (1/3): Payment proof
+  [Element: Proof image thumbnail]
+  Style: 200×140px rounded 8px, border 1px #E0D0BB, cursor zoom-in
+  Behavior: → STATE click to enlarge in lightbox modal (dark overlay + large image + × close + download link)
+  Annotation: 'STATE → open proof lightbox'
+
+  Below: "Diunggah: 15 menit lalu" DM Sans 12px #6B4C35. Payment method: "Transfer BCA · Rp 267.000" DM Sans 14px.
+
+RIGHT (1/3): Action panel
+
+  [Element: Tombol 'Konfirmasi Pembayaran']
+  Style: Primary gold button, full-width, 44px
+  Behavior: → ACTION confirm payment → card moves to "Dikonfirmasi" tab with slide animation → customer notification sent → toast "Pembayaran dikonfirmasi"
+  States: Default → Loading (spinner + "Mengkonfirmasi...") → Disabled (after confirmed)
+  Annotation: 'ACTION → confirm payment → notify customer → move to confirmed tab'
+
+  [Element: Tombol 'Tolak Pembayaran']
+  Style: Secondary danger button (border #C0392B, text #C0392B), full-width, 44px, margin-top 8px
+  Behavior: → STATE inline text input "Alasan penolakan (opsional)" expands below → "Kirim Penolakan" small danger button appears
+  Annotation: 'STATE → expand rejection reason input'
+
+    [Element: 'Kirim Penolakan' button]
+    Behavior: → ACTION reject payment with reason → card moves to "Ditolak" tab → customer notification sent with reason → toast "Pembayaran ditolak"
+    Annotation: 'ACTION → reject payment → notify customer'
+
+  [Element: Note field "Catatan admin"]
+  Style: Small textarea, "Catatan admin (internal)" label DM Sans 12px, 60px height
+  Note: Internal only, customer does not see this.
+
+Confirmed cards: green left border + "✓ Dikonfirmasi" sage green badge + "oleh Admin pada [datetime]" DM Sans 12px #6B4C35.
+Rejected cards: red left border + "✗ Ditolak" red badge + rejection reason shown DM Sans 14px.
+
+EMPTY STATE (when no pending payments): Checkmark illustration + "Semua pembayaran sudah dikonfirmasi!" + "Kembali ke Dashboard" = NAVIGATE /admin
+LOADING STATE: Skeleton shimmer cards.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 22 — KELOLA VOUCHER (/admin/voucher)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Admin creates, edits, and manages discount vouchers. Show usage analytics alongside management.
+
+Breadcrumb: "Admin / Voucher" — "Admin" → NAVIGATE /admin
+
+Page title: "Kelola Voucher" H1. Right:
+
+  [Element: Tombol '+ Buat Voucher Baru']
+  Style: Primary gold button, DM Sans 500 14px, + icon
+  Behavior: → STATE voucher form modal/side panel opens (see VOUCHER FORM MODAL below)
+  Annotation: 'STATE → open voucher creation form'
+
+── STATS ROW (3 small stat cards, bg #F0E8D8, rounded 12px, padding 16px 20px) ──
+  "12 Voucher Aktif" (CreditCard icon) | "38 Penggunaan Bulan Ini" (Users icon) | "Rp 245.000 Total Diskon Diberikan" (Tag icon)
+
+── VOUCHER TABLE (bg #F0E8D8, rounded 12px) ──
+Columns: Kode Voucher | Nama | Tipe | Nilai | Min. Belanja | Kuota (terpakai/total) | Periode | Status | Aksi
+
+Each row (52px height, hover bg #F8F3EA):
+
+  [Element: Voucher code cell]
+  Style: DM Sans Mono 14px in a small dark pill bg #1C0A00 text #F0E8D8, rounded 4px, padding 4px 8px (like a code badge)
+
+  — Nama: DM Sans 400 14px
+  — Tipe: "Persentase" or "Nominal"
+  — Nilai: "20%" or "Rp 50.000"
+  — Min. Belanja: "Rp 100.000"
+
+  [Element: Kuota progress bar]
+  Style: Thin bar 4px height, gold #B8924A fill, bg #E0D0BB, + text "38/100" DM Sans 12px
+  Width proportional to usage: 38% filled
+
+  — Periode: "1–31 Des 2025" DM Sans 12px
+
+  [Element: Status toggle]
+  States:
+    Active = green pill "Aktif"
+    Inactive = gray pill "Nonaktif"
+    Expired = red pill "Kadaluarsa" (auto, cannot toggle)
+  Behavior: → IF not expired: ACTION toggle active/inactive → toast "Status voucher diperbarui"
+  Annotation: 'ACTION → TOGGLE voucher status'
+
+  [Element: 'Edit' link]
+  Style: DM Sans 400 13px #B8924A
+  Behavior: → STATE voucher form opens pre-filled with this voucher's data
+  Annotation: 'STATE → open edit voucher form'
+
+  [Element: 'Hapus' link]
+  Style: DM Sans 400 13px #C0392B
+  Behavior: → ACTION confirm dialog "Hapus voucher '[code]'?" → IF confirmed: delete → row removed → toast "Voucher dihapus" / IF voucher has been used: warning "Voucher sudah digunakan oleh 38 pelanggan. Yakin hapus?"
+  Annotation: 'ACTION → confirm → delete voucher'
+
+── VOUCHER FORM MODAL/SIDE PANEL ──
+Trigger: "+" button or "Edit" link. Show as right side panel 480px or centered modal.
+Title: "Buat Voucher Baru" or "Edit Voucher: [code]"
+
+Form fields (16px gap):
+
+  [Element: Nama Voucher field]
+  Style: Text input, label "NAMA VOUCHER *", placeholder "Diskon Akhir Tahun"
+
+  [Element: Kode Voucher field]
+  Style: DM Sans Mono input, uppercase auto-transform, label "KODE VOUCHER *", placeholder "KOPI20"
+  Adjacent: "Generate Otomatis" ghost link → ACTION generate random 8-char code → fills input
+  Validation: must be unique — IF duplicate: error "Kode voucher sudah digunakan"
+
+  [Element: Tipe Diskon radio pills]
+  Options: "Persentase (%)" | "Nominal (Rp)"
+  Behavior: → STATE value field suffix changes ("%" or "Rp") + "Maksimal Diskon" field appears/hides
+  Annotation: 'STATE → switch discount type → update value field'
+
+  [Element: Nilai Diskon field]
+  Style: Number input, suffix "%" or "Rp" based on tipe, label "NILAI DISKON *"
+  Validation: > 0, if percentage: max 100
+
+  [Element: Maksimal Diskon field]
+  Show: IF tipe = "Persentase"
+  Style: Number input, "Rp" prefix, label "MAKSIMAL DISKON", optional
+  Placeholder: "e.g. Rp 50.000"
+
+  [Element: Minimum Pembelian field]
+  Style: Number input, "Rp" prefix, label "MINIMUM PEMBELIAN *"
+
+  [Element: Kuota Penggunaan]
+  Style: Number input, label "KUOTA PENGGUNAAN"
+  Adjacent: "Tidak terbatas" checkbox → IF checked: number input disabled, kuota = unlimited
+
+  [Element: Masa Berlaku date range picker]
+  Style: Two date inputs (start date — end date), calendar icon, label "MASA BERLAKU *"
+
+  Status toggle: same as table
+
+  [Element: Tombol 'Simpan Voucher']
+  Style: Primary gold button, full-width
+  Behavior: → ACTION validate → IF valid: save → modal closes → table refreshes → toast "Voucher berhasil disimpan" / IF invalid: show field errors
+  States: Default → Loading → Disabled (if required fields empty)
+  Annotation: 'ACTION → save voucher → close modal → refresh table'
+
+  [Element: Tombol 'Batal']
+  Style: Ghost button
+  Behavior: → IF unsaved changes: confirm "Buang perubahan?" → STATE close modal / IF no changes: close immediately
+  Annotation: 'STATE → close modal (confirm if unsaved)'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 23 — KELOLA PENGGUNA (/admin/pengguna)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Admin views all registered users, manages roles, and can review user activity. Dense user table with detail drawer.
+
+Breadcrumb: "Admin / Pengguna" — "Admin" → NAVIGATE /admin
+
+Page title: "Kelola Pengguna" H1.
+
+── STATS ROW (3 small stat cards) ──
+  "1.248 Total" (Users icon) | "142 Aktif Bulan Ini" (Activity icon) | "12 Baru Minggu Ini" (UserPlus icon)
+
+── TOOLBAR ──
+
+  [Element: Search input]
+  Style: DM Sans 14px, placeholder "Cari nama / email..."
+  Behavior: → STATE table filters by search term in real-time
+
+  [Element: Role filter dropdown]
+  Options: "Semua" | "Customer" | "Admin"
+  Behavior: → STATE table filters by role
+  Annotation: 'STATE → filter by role'
+
+  [Element: Sort dropdown]
+  Options: "Terbaru" | "Nama A-Z" | "Pesanan Terbanyak"
+  Behavior: → STATE table reorders
+  Annotation: 'STATE → sort users'
+
+── USER TABLE (bg #F0E8D8, rounded 12px) ──
+Columns: # | Pengguna | Email | No. HP | Role | Total Pesanan | Bergabung | Aksi
+
+Each row (52px height, hover bg #F8F3EA):
+  — Number (row index)
+  — Avatar 32px circle + name DM Sans 500 14px
+  — Email DM Sans 14px
+  — Phone DM Sans 14px
+  — Role badge:
+    "Customer" = blue pill (bg #E6F1FB, text #0C447C)
+    "Admin" = gold pill (bg #FAEEDA, text #633806)
+  — Total orders count DM Sans 14px. Hover tooltip: "Lihat pesanan pengguna ini"
+  — Join date DM Sans 12px #6B4C35
+
+  [Element: 'Detail' link]
+  Style: DM Sans 400 13px #B8924A
+  Behavior: → STATE right-side user detail drawer slides open (see USER DETAIL DRAWER below)
+  Annotation: 'STATE → open user detail drawer'
+
+  [Element: Three-dot more menu]
+  Style: Phosphor DotsThree 16px
+  Behavior: → STATE dropdown menu opens:
+
+    [Element: 'Jadikan Admin' menu item]
+    Behavior: → ACTION confirm dialog "Jadikan [name] sebagai Admin? Pengguna ini akan mendapatkan akses penuh ke panel admin." → IF confirmed: role updates → badge changes to gold "Admin" → toast "Role diperbarui"
+    Annotation: 'ACTION → confirm → upgrade to admin role'
+
+    [Element: 'Nonaktifkan' menu item]
+    Style: Text #C0392B
+    Behavior: → ACTION confirm "Nonaktifkan akun [name]? Pengguna tidak akan bisa login." → IF confirmed: account suspended → row shows "Nonaktif" gray badge → toast "Akun dinonaktifkan"
+    Annotation: 'ACTION → confirm → suspend account'
+
+    [Element: 'Reset Password' menu item]
+    Behavior: → ACTION confirm "Kirim email reset password ke [email]?" → IF confirmed: send reset email → toast "Email reset password terkirim"
+    Annotation: 'ACTION → send password reset email'
+
+── USER DETAIL DRAWER/PANEL ──
+Trigger: "Detail" link. Right-side slide panel, 440px wide, bg #FAF7F2, shadow left.
+
+Header: large avatar 72px + name H3 Cormorant Garamond 600 24px + email DM Sans 14px #6B4C35 + phone + join date + role badge.
+Stats row: "12 Pesanan" | "3 Ulasan" | "Rp 1.2M Total Belanja"
+
+  [Element: Tabs in drawer]
+  Options: "Riwayat Pesanan" | "Alamat" | "Ulasan"
+  Behavior: → STATE tab content switches
+  Annotation: 'STATE → switch drawer tab'
+
+  "Riwayat Pesanan" tab: compact order list (5 recent orders): order number + date + status badge + total. Each row → NAVIGATE /admin/pesanan/[id]
+  "Alamat" tab: list of saved addresses (compact).
+  "Ulasan" tab: list of reviews (star + product name + excerpt).
+
+Action buttons at bottom of drawer:
+
+  [Element: 'Jadikan Admin' secondary button]
+  Behavior: same as table menu (confirm → update role)
+
+  [Element: 'Nonaktifkan Akun' danger button]
+  Behavior: same as table menu (confirm → suspend)
+
+  [Element: × Close drawer icon]
+  Behavior: → STATE drawer closes with slide-out animation
+  Annotation: 'STATE → close drawer'
+
+Pagination in table.
+EMPTY/LOADING states: appropriate skeleton and empty messages.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 24 — MODERASI ULASAN (/admin/ulasan)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Admin reviews and moderates customer product reviews before they appear publicly on the product page. Surface suspicious content for quick action.
+
+Breadcrumb: "Admin / Ulasan" — "Admin" → NAVIGATE /admin
+
+Page title: "Moderasi Ulasan" H1. "12 ulasan perlu ditinjau" amber top notice (bg #FAEEDA, DM Sans 500 14px).
+
+  [Element: Filter tabs]
+  Options: "Perlu Ditinjau (12)" | "Disetujui" | "Ditolak" | "Semua"
+  Behavior: → STATE review cards list filters
+  States: Inactive → Active (gold underline)
+  Annotation: 'STATE → filter reviews by moderation status'
+
+REVIEW CARDS LIST (stacked, rounded 12px, bg #F0E8D8, padding 24px, 16px gap):
+Each review card (3-column layout):
+
+LEFT (product info, 25%):
+  Product thumbnail 64×64px rounded 8px → NAVIGATE /admin/produk/[id]/edit on click
+  Product name DM Sans 500 14px
+  Variant DM Sans 12px #6B4C35
+  Order number link DM Sans Mono 12px #B8924A → NAVIGATE /admin/pesanan/[order-id]
+
+MIDDLE (review content, 50%):
+  — Reviewer: avatar 32px + name DM Sans 500 14px + rating (gold filled stars, 16px) + posted date DM Sans 12px #A8886A
+  — Review text: DM Sans 400 14px #1C0A00, line-height 1.7
+
+  [Element: 'Selengkapnya' expand link]
+  Show: IF review text > 3 lines
+  Behavior: → STATE text expands to show full content
+  Annotation: 'STATE → expand full review text'
+
+  — Review photo thumbnail (if attached): 80×60px rounded 6px
+    → STATE click to enlarge in lightbox
+
+  IF content flagged:
+    "⚠ Konten mencurigakan" small label, bg #FCEBEB text #C0392B, DM Sans 12px, rounded 4px
+
+RIGHT (moderation actions, 25%):
+
+  [Element: Tombol 'Setujui']
+  Style: Primary sage-green button, bg #27664A text #FAF7F2, full-width, 40px
+  Behavior: → ACTION approve review → card moves to "Disetujui" tab with slide → review becomes visible on product page → toast "Ulasan disetujui"
+  States: Default → Loading (spinner)
+  Annotation: 'ACTION → approve review → visible on product page'
+
+  [Element: Tombol 'Tolak']
+  Style: Secondary danger outline button, border #C0392B text #C0392B, full-width, 40px, margin-top 8px
+  Behavior: → ACTION reject review → card moves to "Ditolak" tab → review hidden from product page → toast "Ulasan ditolak"
+  Annotation: 'ACTION → reject review → hidden from product'
+
+  [Element: 'Tandai Spam' ghost link]
+  Style: DM Sans 400 12px #C0392B, underline
+  Behavior: → ACTION flag as spam + auto-reject → card moves to "Ditolak" tab with "Spam" badge → toast "Ditandai sebagai spam"
+  Annotation: 'ACTION → flag spam + auto-reject'
+
+  Approved reviews show only: "✓ Disetujui" sage green badge, no action buttons.
+  Rejected reviews show: "✗ Ditolak" red badge + optional "Setujui Ulang" ghost link to revert.
+
+EMPTY STATE: Checkmark illustration + "Semua ulasan sudah ditinjau!" + "Kembali ke Dashboard" → NAVIGATE /admin
+LOADING STATE: Skeleton shimmer for review cards.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 25 — LAPORAN PENJUALAN (/admin/laporan)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Comprehensive sales analytics dashboard. Visual charts + exportable data tables. Admin uses this for business decisions and reporting.
+
+Breadcrumb: "Admin / Laporan" — "Admin" → NAVIGATE /admin
+
+Page title: "Laporan Penjualan" H1. Right side header:
+
+  [Element: Date range picker]
+  Style: Combined date input "Desember 2025", calendar icon, DM Sans 14px
+  Behavior: → STATE all charts AND tables update to selected date range
+  Annotation: 'STATE → update all data to new date range'
+
+  [Element: Tombol 'Ekspor PDF']
+  Style: Ghost button, Phosphor FilePdf icon, DM Sans 14px #6B4C35
+  Behavior: → ACTION generate PDF report → browser download dialog → file "laporan_penjualan_[period].pdf"
+  States: Default → Loading (spinner + "Membuat PDF...") → Complete (checkmark flash)
+  Annotation: 'ACTION → generate + download PDF'
+
+  [Element: Tombol 'Ekspor Excel']
+  Style: Ghost button, Phosphor FileXls icon, DM Sans 14px #6B4C35
+  Behavior: → ACTION generate .xlsx → browser download dialog → file "laporan_penjualan_[period].xlsx"
+  States: Default → Loading → Complete
+  Annotation: 'ACTION → generate + download Excel'
+
+── TOP KPI ROW (4 cards, same style as dashboard stats) ──
+  "Rp 12.450.000" — "Pendapatan" (↑ vs previous period)
+  "142" — "Pesanan Selesai"
+  "Rp 87.600" — "Rata-rata Nilai Pesanan"
+  "23" — "Item Terjual Hari Ini"
+
+── CHARTS ROW 1 (2 charts side by side, 60/40 split, 24px gap) ──
+
+Left chart (60%): "Pendapatan Harian" (bg #F0E8D8, rounded 12px, padding 24px):
+  Line chart — 30-day period, gold #B8924A line, warm beige area fill below line (rgba(184,146,74,0.1)), X-axis dates, Y-axis Rupiah formatted.
+  Hover tooltip: exact Rp value + date + comparison to same day previous period.
+  Chart animation: line draws from left to right on page load (0.8s ease-out).
+
+Right chart (40%): "Distribusi Kategori" (same container style):
+  Donut chart — 4 segments:
+    Arabika: #B8924A (gold)
+    Robusta: #7A9468 (sage)
+    Blend: #6B4C35 (warm brown)
+    Single Origin: #E0D0BB (cream)
+  Center of donut: total amount or percentage
+  Legend below: color dot + category name + percentage + Rp amount
+  Hover on segment: segment slightly expands + tooltip with exact values.
+
+── CHARTS ROW 2 (2 charts, 50/50 split) ──
+
+Left (50%): "Metode Pembayaran" horizontal bar chart (same container style):
+  Horizontal bars, gold #B8924A fill:
+    Transfer Bank — 45%
+    Virtual Account — 28%
+    GoPay — 18%
+    DANA — 9%
+  Each bar: category label left, bar fill proportional, percentage right, Rp amount tooltip on hover.
+
+Right (50%): "Status Pesanan Bulan Ini" horizontal bar chart:
+  Color-coded bars:
+    "Selesai" — #27664A (green)
+    "Dikirim" — #0C447C (blue)
+    "Diproses" — #C77A00 (amber)
+    "Dibatalkan" — #C0392B (red)
+  Each with count + percentage.
+
+── TOP PRODUCTS TABLE (bottom, full-width, bg #F0E8D8, rounded 12px, padding 24px) ──
+Header: "Produk Terlaris Bulan Ini" H3 +
+
+  [Element: 'Lihat Semua' link]
+  Style: DM Sans 500 14px #B8924A
+  Behavior: → NAVIGATE /admin/produk?sort=terlaris
+  Annotation: 'NAVIGATE /admin/produk?sort=terlaris'
+
+Columns: Rank | Produk | Varian Terlaris | Qty Terjual | Pendapatan | % Total
+
+5 rows:
+  — Rank: #1 has gold trophy icon 🏆 (Phosphor Trophy 16px #B8924A), #2-5 just numbers
+  — Produk: thumbnail 36px + name DM Sans 500 14px → NAVIGATE /admin/produk/[id]/edit on click
+  — Varian Terlaris: DM Sans 12px #6B4C35 (e.g. "250g · Medium")
+  — Qty Terjual: DM Sans 500 14px
+  — Pendapatan: DM Sans 500 14px #B8924A
+  — % Total: thin gold bar (proportional width) + percentage text DM Sans 12px
+
+LOADING STATE: Skeleton shimmer for all charts and KPI cards.
+ERROR STATE: "Gagal memuat data laporan" + "Coba Lagi" button → ACTION retry fetch.
+
+
+════════════════════════════════════════
+ANNOTATION & COMPONENT INSTRUCTIONS
+════════════════════════════════════════
+
+For every interactive element in every page, add a small Figma annotation label (sticky note style, yellow background) showing: element name → action → destination. Place annotations outside the frame boundary so they don't clutter the design but remain attached to their element.
+
+Every button, form field, and card must include a Figma component description note specifying: purpose, trigger event, expected outcome, and all visible states (default/hover/active/disabled/loading/error/success).

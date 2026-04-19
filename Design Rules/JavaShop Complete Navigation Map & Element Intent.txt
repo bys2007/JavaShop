@@ -1,0 +1,229 @@
+Before designing any page in this batch, internalize this complete JavaShop navigation map. Every element you place must resolve to one of these destinations or actions. No orphan elements allowed.
+
+═══════════════════════════════════════
+JAVASHOP — SITEMAP & URL STRUCTURE
+═══════════════════════════════════════
+PUBLIC PAGES (accessible without login):
+  /                          → Beranda (Home)
+  /produk                    → Katalog Produk
+  /produk?kategori=[slug]    → Katalog filtered by category
+  /produk?q=[query]          → Katalog search results
+  /produk/[slug]             → Detail Produk
+  /login                     → Halaman Login
+  /daftar                    → Halaman Register
+  /auth/lupa-sandi           → Lupa Kata Sandi
+  /auth/reset-sandi          → Reset Kata Sandi
+
+CUSTOMER PRIVATE PAGES (requires login, redirect to /login?redirect=[page] if not):
+  /keranjang                 → Keranjang Belanja
+  /checkout                  → Halaman Checkout
+  /checkout/pembayaran       → Halaman Pembayaran (Midtrans / upload bukti)
+  /pesanan/berhasil          → Order Success / Konfirmasi
+  /akun                      → Profil Saya
+  /akun/pesanan              → Riwayat Pesanan
+  /akun/pesanan/[order-id]   → Detail Pesanan & Tracking
+  /akun/wishlist             → Wishlist
+  /akun/ulasan               → Ulasan Saya
+  /akun/notifikasi           → Notifikasi
+  /akun/alamat               → Kelola Alamat
+  /akun/ubah-sandi           → Ubah Kata Sandi
+
+ADMIN PAGES (requires admin role, redirect to /login if not admin):
+  /admin                     → Admin Dashboard
+  /admin/produk              → Daftar Produk
+  /admin/produk/tambah       → Form Tambah Produk
+  /admin/produk/[id]/edit    → Form Edit Produk
+  /admin/pesanan             → Daftar Pesanan
+  /admin/pesanan/[id]        → Detail Pesanan Admin
+  /admin/pembayaran          → Konfirmasi Pembayaran
+  /admin/voucher             → Daftar Voucher
+  /admin/pengguna            → Daftar Pengguna
+  /admin/ulasan              → Moderasi Ulasan
+  /admin/laporan             → Laporan Penjualan
+
+EXTERNAL SERVICES:
+  Midtrans payment page      → https://app.midtrans.com/... (opens in same tab/popup)
+  Biteship tracking          → https://biteship.com/tracking/[resi] (opens new tab)
+
+═══════════════════════════════════════
+GLOBAL ELEMENT INTENT MAP
+═══════════════════════════════════════
+Use this as the source of truth for every element below.
+
+── NAVBAR ELEMENTS ──
+Logo (JavaShop wordmark)          → NAVIGATE → /
+"Beranda" nav link                → NAVIGATE → /
+"Produk" nav link                 → NAVIGATE → /produk
+"Tentang Kami" nav link           → NAVIGATE → /#tentang (anchor scroll)
+"Kontak" nav link                 → NAVIGATE → /#kontak (anchor scroll)
+Search icon (🔍)                  → STATE → Search bar expands inline in navbar
+Wishlist icon (♥)                 → IF logged in: NAVIGATE /akun/wishlist / ELSE: NAVIGATE /login?redirect=/akun/wishlist
+Cart icon (🛒) + badge count      → NAVIGATE → /keranjang
+User avatar (logged in)           → STATE → Dropdown opens (Profil / Pesanan / Keluar)
+"Masuk / Daftar" link             → NAVIGATE → /login
+"Keluar" (dropdown)               → ACTION → Clear session → NAVIGATE /
+
+── HOME PAGE ──
+"Belanja Sekarang" hero button    → NAVIGATE → /produk
+"Lihat Koleksi" hero button       → STATE → Smooth scroll to Featured Products section
+Category pill (e.g. "Arabika")   → NAVIGATE → /produk?kategori=arabika
+Product card (click anywhere)     → NAVIGATE → /produk/[product-slug]
+"Tambah ke Keranjang" on card     → IF logged in: ACTION add to cart + toast / ELSE: NAVIGATE /login?redirect=/produk/[slug]
+Heart icon on product card        → IF logged in: ACTION toggle wishlist + fill/unfill / ELSE: NAVIGATE /login
+"Langganan" newsletter button     → ACTION → Submit email → Success inline message "Berhasil! Cek email Anda."
+Footer social icons               → EXTERNAL → respective social media URLs
+
+── CATALOG PAGE ──
+Filter checkbox                   → STATE → Products grid refreshes with filter applied
+Sort dropdown (Terbaru, etc.)    → STATE → Products reordered
+Price range slider                → STATE → Products filtered by price range on release
+"Terapkan Filter" button          → ACTION → Apply all selected filters → Grid refreshes
+Active filter tag × (dismiss)    → ACTION → Remove that filter → Grid refreshes
+Pagination numbers                → NAVIGATE → /produk?page=[n]
+"Cari" (search input enter)       → NAVIGATE → /produk?q=[search-term]
+Product card                      → NAVIGATE → /produk/[slug]
+
+── PRODUCT DETAIL PAGE ──
+Thumbnail image                   → STATE → Main image switches to that thumbnail
+Size variant pill (e.g. "250g")   → STATE → Variant selected, price updates, stock updates
+Grind type pill                   → STATE → Sub-variant selected
+Quantity minus (−)                → STATE → Quantity decreases (min 1)
+Quantity plus (+)                 → STATE → Quantity increases (max = stock)
+"Tambah ke Keranjang" button      → IF logged in + variant selected: ACTION add to cart + toast success / IF not logged in: redirect /login / IF no variant selected: STATE show "Pilih varian dahulu" inline error
+Heart (wishlist) button           → IF logged in: TOGGLE wishlist / ELSE: redirect /login
+"Deskripsi" tab                   → STATE → Description content shows
+"Informasi Produk" tab            → STATE → Spec table shows
+"Ulasan ([n])" tab                → STATE → Reviews section shows
+"Lihat Semua Ulasan" link         → STATE → Load more reviews (pagination)
+Related product card              → NAVIGATE → /produk/[related-slug]
+
+── CART PAGE ──
+Quantity minus/plus               → ACTION → Update qty in cart → Subtotal recalculates
+Trash / delete icon               → ACTION → Remove item → Cart refreshes (confirm dialog first)
+"Lanjut Belanja" button           → NAVIGATE → /produk
+Voucher "Terapkan" button         → ACTION → Validate code → IF valid: discount applied, badge shown / IF invalid: error "Kode voucher tidak valid"
+Voucher × dismiss                 → ACTION → Remove voucher → Total recalculates
+"Lanjut ke Checkout" button       → IF logged in + cart not empty: NAVIGATE /checkout / IF not logged in: NAVIGATE /login?redirect=/checkout
+
+── CHECKOUT PAGE ──
+Address radio card                → STATE → Selects that address for delivery
+"+ Tambah Alamat Baru" button     → STATE → Address form expands inline
+Province dropdown                 → ACTION → Fetch cities from Biteship API
+City dropdown                     → ACTION → Fetch districts from Biteship API
+Courier option radio card         → STATE → Selects courier + price appears in order summary
+Payment method card               → STATE → Selects payment method, Midtrans options update
+"Bayar Sekarang" button           → IF all fields valid: ACTION → Create order → IF Midtrans: EXTERNAL Midtrans payment / IF Transfer: NAVIGATE /checkout/pembayaran
+
+── PAYMENT PAGE ──
+Copy VA number button             → ACTION → Copy to clipboard + "Tersalin!" tooltip
+"Saya Sudah Bayar" button         → NAVIGATE → /pesanan/berhasil
+"Batalkan Pesanan" link           → ACTION → Confirm dialog "Batalkan pesanan?" → IF confirmed: cancel order → NAVIGATE /akun/pesanan
+Upload zone (transfer)            → ACTION → File picker opens → Preview shows
+"Kirim Bukti" button              → ACTION → Upload image → Loading → IF success: NAVIGATE /pesanan/berhasil / IF error: show error
+
+── ORDER SUCCESS ──
+"Lacak Pesanan" button            → NAVIGATE → /akun/pesanan/[order-id]
+"Lanjut Belanja" button           → NAVIGATE → /produk
+
+── ORDER DETAIL / TRACKING ──
+"Cek Resi" button                 → EXTERNAL → Biteship tracking page (new tab)
+Resi number copy icon             → ACTION → Copy to clipboard
+"Konfirmasi Penerimaan" button    → ACTION → Mark order as received → Status updates → "Tulis Ulasan" button appears
+"Tulis Ulasan" button             → NAVIGATE → /akun/ulasan
+
+── LOGIN PAGE ──
+"Masuk" submit button             → ACTION → Authenticate → IF success: NAVIGATE to redirect param or / → IF fail: show "Email atau kata sandi salah"
+"Lupa kata sandi?" link           → NAVIGATE → /auth/lupa-sandi
+"Lanjutkan dengan Google" button  → EXTERNAL → Google OAuth → callback → NAVIGATE /
+"Daftar sekarang" link            → NAVIGATE → /daftar
+
+── REGISTER PAGE ──
+"Daftar Sekarang" button          → ACTION → Validate all fields → IF valid: create account → NAVIGATE / with success toast / IF invalid: show inline field errors
+Password strength bar             → STATE → Updates live as user types password
+"Masuk di sini" link              → NAVIGATE → /login
+
+── ACCOUNT SIDEBAR ──
+"Profil Saya"                     → NAVIGATE → /akun
+"Riwayat Pesanan"                 → NAVIGATE → /akun/pesanan
+"Wishlist"                        → NAVIGATE → /akun/wishlist
+"Ulasan Saya"                     → NAVIGATE → /akun/ulasan
+"Notifikasi"                      → NAVIGATE → /akun/notifikasi
+"Alamat"                          → NAVIGATE → /akun/alamat
+"Ubah Kata Sandi"                 → NAVIGATE → /akun/ubah-sandi
+"Keluar"                          → ACTION → Confirm "Yakin ingin keluar?" → Clear session → NAVIGATE /
+
+── ORDER HISTORY ──
+Status filter tabs                → STATE → List filters to that status
+"Lihat Detail" button             → NAVIGATE → /akun/pesanan/[order-id]
+"Bayar Sekarang" button           → NAVIGATE → /checkout/pembayaran?order=[id]
+"Tulis Ulasan" button             → NAVIGATE → /akun/ulasan#[order-id]
+"Beli Lagi" button                → ACTION → Re-add items to cart → NAVIGATE /keranjang
+
+── ADMIN SIDEBAR ──
+"Dashboard"                       → NAVIGATE → /admin
+"Produk" → "Daftar Produk"        → NAVIGATE → /admin/produk
+"Produk" → "Tambah Produk"        → NAVIGATE → /admin/produk/tambah
+"Pesanan"                         → NAVIGATE → /admin/pesanan
+"Konfirmasi Bayar"                → NAVIGATE → /admin/pembayaran
+"Voucher"                         → NAVIGATE → /admin/voucher
+"Pengguna"                        → NAVIGATE → /admin/pengguna
+"Ulasan"                          → NAVIGATE → /admin/ulasan
+"Laporan Penjualan"               → NAVIGATE → /admin/laporan
+
+── ADMIN DASHBOARD ──
+"Konfirmasi Sekarang" button      → NAVIGATE → /admin/pembayaran
+"Lihat Produk" (stok habis)       → NAVIGATE → /admin/produk?stok=rendah
+"Moderasi Sekarang" button        → NAVIGATE → /admin/ulasan?status=pending
+Recent order "Detail" link        → NAVIGATE → /admin/pesanan/[id]
+
+── ADMIN PRODUCT LIST ──
+"+ Tambah Produk" button          → NAVIGATE → /admin/produk/tambah
+Product row "Edit" link           → NAVIGATE → /admin/produk/[id]/edit
+Product row "Hapus" link          → ACTION → Confirm dialog "Hapus produk ini?" → IF confirmed: delete → refresh list
+Status toggle                     → ACTION → Toggle active/inactive immediately → show toast
+
+── ADMIN PRODUCT FORM ──
+"Tambah Varian +" link            → STATE → New variant row added to table
+"Publikasikan" button             → ACTION → Save + set status active → NAVIGATE /admin/produk with success toast
+"Simpan Draft" button             → ACTION → Save with status draft → stay on page + show "Tersimpan" toast
+"← Kembali ke Daftar Produk"     → NAVIGATE → /admin/produk (confirm if unsaved changes)
+
+── ADMIN ORDER LIST ──
+Status tab                        → STATE → List filtered to that status
+"Detail" link                     → NAVIGATE → /admin/pesanan/[id]
+"Konfirmasi" button (in row)      → NAVIGATE → /admin/pembayaran#[payment-id]
+"Proses" button (in row)          → ACTION → Update status to "Diproses" inline → badge updates
+
+── ADMIN ORDER DETAIL ──
+"Konfirmasi Pembayaran" button    → ACTION → Confirm payment → Status updates → Notification sent to customer
+"Tolak Pembayaran" button         → ACTION → Input rejection reason → Confirm → Payment rejected → Notification sent
+Proof image thumbnail             → STATE → Lightbox / full-size modal opens
+"Update Status" + "Simpan"        → ACTION → Update order status → Timeline row added
+"Simpan Resi" button              → ACTION → Save resi number + courier → Customer notified
+
+── ADMIN PAYMENT CONFIRMATION ──
+"Konfirmasi Pembayaran" button    → ACTION → Confirm → Card moves to "Dikonfirmasi" tab → Customer notified
+"Tolak Pembayaran" button         → ACTION → Show rejection reason input → Send → Card moves to "Ditolak" tab
+Proof image                       → STATE → Lightbox opens
+
+── ADMIN VOUCHER ──
+"+ Buat Voucher Baru"             → STATE → Form panel/modal opens
+"Simpan Voucher" in form          → ACTION → Save → Modal closes → List refreshes
+"Edit" link                       → STATE → Form fills with voucher data
+"Hapus" link                      → ACTION → Confirm dialog → Delete → List refreshes
+Status toggle                     → ACTION → Toggle active/inactive
+
+── ADMIN USER LIST ──
+"Detail" link                     → STATE → Right-side drawer slides open
+"Jadikan Admin" in dropdown       → ACTION → Confirm "Jadikan admin?" → Role updates → Badge changes
+"Nonaktifkan" in dropdown         → ACTION → Confirm → Account suspended → Row reflects
+
+── ADMIN REVIEW MODERATION ──
+"Setujui" button                  → ACTION → Review approved → Card moves to "Disetujui" tab → Visible on product page
+"Tolak" button                    → ACTION → Review rejected → Card moves to "Ditolak" tab → Hidden from product
+"Tandai Spam" link                → ACTION → Flag as spam + auto-reject
+
+── ADMIN LAPORAN ──
+Date range picker                 → STATE → All charts and tables update to new date range
+"Ekspor PDF" button               → ACTION → Generate PDF → Browser download dialog
+"Ekspor Excel" button             → ACTION → Generate .xlsx → Browser download dialog

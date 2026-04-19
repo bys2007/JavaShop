@@ -1,0 +1,398 @@
+Before designing any page in this batch, internalize this complete JavaShop sitemap. Every element you place must resolve to one of these destinations or actions. No orphan elements allowed.
+
+═══════════════════════════════════════
+JAVASHOP — SITEMAP & URL STRUCTURE
+═══════════════════════════════════════
+PUBLIC PAGES (accessible without login):
+  /                          → Beranda (Home)
+  /produk                    → Katalog Produk
+  /produk?kategori=[slug]    → Katalog filtered by category
+  /produk?q=[query]          → Katalog search results
+  /produk/[slug]             → Detail Produk
+  /login                     → Halaman Login
+  /daftar                    → Halaman Register
+  /auth/lupa-sandi           → Lupa Kata Sandi
+  /auth/reset-sandi          → Reset Kata Sandi
+
+CUSTOMER PRIVATE PAGES (requires login, redirect to /login?redirect=[page] if not):
+  /keranjang                 → Keranjang Belanja
+  /checkout                  → Halaman Checkout
+  /checkout/pembayaran       → Halaman Pembayaran (Midtrans / upload bukti)
+  /pesanan/berhasil          → Order Success / Konfirmasi
+  /akun                      → Profil Saya
+  /akun/pesanan              → Riwayat Pesanan
+  /akun/pesanan/[order-id]   → Detail Pesanan & Tracking
+  /akun/wishlist             → Wishlist
+  /akun/ulasan               → Ulasan Saya
+  /akun/notifikasi           → Notifikasi
+  /akun/alamat               → Kelola Alamat
+  /akun/ubah-sandi           → Ubah Kata Sandi
+
+ADMIN PAGES (requires admin role):
+  /admin                     → Admin Dashboard
+  /admin/produk              → Daftar Produk
+  /admin/produk/tambah       → Form Tambah Produk
+  /admin/produk/[id]/edit    → Form Edit Produk
+  /admin/pesanan             → Daftar Pesanan
+  /admin/pesanan/[id]        → Detail Pesanan Admin
+  /admin/pembayaran          → Konfirmasi Pembayaran
+  /admin/voucher             → Daftar Voucher
+  /admin/pengguna            → Daftar Pengguna
+  /admin/ulasan              → Moderasi Ulasan
+  /admin/laporan             → Laporan Penjualan
+
+EXTERNAL SERVICES:
+  Midtrans payment page      → https://app.midtrans.com/...
+  Biteship tracking          → https://biteship.com/tracking/[resi]
+
+
+═══════════════════════════════════════
+BATCH PROMPT — 5 HALAMAN ENTRY PAGES
+═══════════════════════════════════════
+
+Design 5 entry pages for JavaShop — a premium artisan coffee e-commerce website. These are the FIRST pages any visitor encounters. Priority: strong first impression, clear value proposition, frictionless path to conversion (register or shop). Follow all design system rules. Desktop 1440px. Cormorant Garamond headings, DM Sans body, #B8924A gold, #FAF7F2 warm off-white background.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 1 — LANDING PAGE (/)
+Pre-login marketing page. First impression for brand-new visitors.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Convert a curious first-time visitor into either a registered user or an active shopper. Every section must push toward one of two CTAs: "Daftar Sekarang" or "Belanja Sekarang".
+
+NAVBAR (transparent on this page only, becomes solid #FAF7F2 on scroll):
+72px height. Initially: bg transparent, all text and icons in #F0E8D8 (light, for contrast on dark hero).
+On scroll past 80px: bg #FAF7F2, text switches to #1C0A00, adds bottom border 1px #E0D0BB, drop shadow 0 1px 8px rgba(28,10,0,0.06).
+Left: JavaShop logo (light variant on transparent, dark variant on solid).
+Center: "Beranda" | "Produk" | "Tentang Kami" | "Kontak" — DM Sans 400 14px.
+Right: "Masuk" ghost button (light border on transparent bg) + "Daftar Gratis" primary gold button.
+Element intents:
+  "Beranda" → NAVIGATE /
+  "Produk" → NAVIGATE /produk
+  "Tentang Kami" → STATE smooth scroll to #tentang-kami section
+  "Kontak" → STATE smooth scroll to #kontak section
+  "Masuk" → NAVIGATE /login
+  "Daftar Gratis" → NAVIGATE /daftar
+
+── HERO SECTION (100vh, full-bleed) ──
+Full-viewport cinematic background: split composition — left 55% is a rich, dark atmospheric coffee photo (close-up of espresso pouring into a white cup, dramatic low-key lighting, deep warm shadows). Right 45% is bg #1C0A00 (espresso dark) with subtle warm grain texture overlay (very fine, not distracting).
+
+Left side — over the photo, bottom-left anchored content (positioned at bottom 15% left 80px):
+  — Small eyebrow label: "Specialty Coffee Indonesia" — DM Sans 400 11px letter-spacing 0.16em uppercase, color #B8924A
+  — Main headline (2 lines): "Setiap Tegukan,\nSebuah Karya." — Cormorant Garamond 600 72px, color #F0E8D8, line-height 1.0, text-shadow 0 2px 24px rgba(28,10,0,0.4)
+  — Micro line below: "Biji kopi pilihan petani Nusantara, kini di depan pintu Anda." — DM Sans 400 16px #E0D0BB, max-width 400px, margin-top 16px
+
+Right side — vertically centered in the dark panel:
+  — JavaShop logo mark (coffee bean icon, 48px) in #B8924A, centered
+  — "Mulai perjalanan kopi\nterbaik Anda hari ini." — Cormorant Garamond 500 italic 28px, color #F0E8D8, text-align center, line-height 1.3, max-width 280px
+  — Two stacked buttons (margin-top 32px, full-width 280px each):
+      Primary: "Daftar Sekarang — Gratis" bg #B8924A → NAVIGATE /daftar
+      Secondary: "Jelajahi Produk" transparent border #F0E8D8 text #F0E8D8 → NAVIGATE /produk
+  — Trust micro-text below buttons: "★★★★★  Dipercaya 10.000+ pecinta kopi" — DM Sans 400 12px #A8886A, centered
+
+Bottom of hero — full-width strip over both sides (absolute bottom 0, height 56px, bg rgba(20,12,5,0.7) backdrop-blur):
+  Horizontal row of 4 brand values, equally spaced, center-aligned, dividers between:
+  "500+ Produk Pilihan" | "Dari 15 Daerah Asal" | "Pengiriman ke Seluruh Indonesia" | "Pembayaran Aman via Midtrans"
+  — Each: DM Sans 400 13px, color #E0D0BB, small gold dot separator
+
+── HOW IT WORKS (bg #FAF7F2, py 96px) ──
+Section label at top: "CARA KERJA" — DM Sans 500 11px uppercase letter-spacing 0.14em #B8924A, centered.
+Section heading: "Belanja Kopi Premium\nCukup 3 Langkah" — Cormorant Garamond 600 44px #1C0A00, centered, max-width 500px, margin auto.
+
+3 steps in a horizontal row (equal width, 400px gap between them, connected by thin dashed gold line #B8924A between step icons):
+Each step:
+  — Step number circle: 56px diameter, border 1.5px #B8924A, Cormorant Garamond 600 24px #B8924A
+  — Step title: DM Sans 500 18px #1C0A00, margin-top 20px
+  — Step description: DM Sans 400 14px #6B4C35, line-height 1.7, max-width 240px
+
+Step 1: "1" → "Pilih & Pesan" → "Temukan kopi pilihan dari ratusan produk. Pilih ukuran dan tingkat gilingan sesuai kebutuhanmu."
+Step 2: "2" → "Bayar dengan Mudah" → "Pembayaran aman via Midtrans. Transfer bank, virtual account, GoPay, OVO, atau kartu kredit."
+Step 3: "3" → "Terima di Rumah" → "Dikirim via Biteship ke seluruh Indonesia. Estimasi 2–5 hari kerja dengan tracking real-time."
+
+CTA below the 3 steps (margin-top 48px, centered): "Mulai Sekarang" primary gold button → NAVIGATE /daftar
+
+── FEATURED PRODUCTS TEASER (bg #F0E8D8, py 80px) ──
+Section label: "PRODUK UNGGULAN" — DM Sans 500 11px uppercase #B8924A, centered.
+Heading: "Yang Sedang Disukai\nPecinta Kopi Indonesia" — Cormorant Garamond 600 44px #1C0A00, centered.
+
+4 product cards in a row (same style as catalog cards — 4:5 ratio image, Cormorant name, gold price, star rating, hover effect with "Lihat Produk" button).
+Each card click → NAVIGATE /produk/[slug] (if not logged in) OR show quick-add if logged in.
+
+Below cards (margin-top 40px, centered): "Lihat Semua Produk →" — DM Sans 500 14px #B8924A, underline on hover → NAVIGATE /produk
+
+── ORIGIN STORY / BRAND (bg #1C0A00, py 80px) ──
+id="tentang-kami"
+Two columns (48/52 split):
+LEFT — Stacked warm product/farm photography collage: 3 images at different sizes overlapping slightly, rounded 16px, one landscape (coffee farm), one portrait (roasting beans close-up), one square (paper bag packaging). Add thin 1px gold border to collage container.
+
+RIGHT — Text content vertically centered:
+  — Section label: "TENTANG KAMI" DM Sans 500 11px uppercase letter-spacing 0.14em #B8924A
+  — Heading: "Langsung dari\nPetani Pilihan" — Cormorant Garamond 600 44px #F0E8D8, line-height 1.15
+  — Body: "JavaShop hadir untuk menjembatani petani kopi lokal terbaik Indonesia dengan para pencinta kopi di seluruh penjuru negeri. Setiap produk yang kami hadirkan telah melalui seleksi ketat — dari ketinggian kebun, proses panen, hingga roasting." — DM Sans 400 16px #A8886A, line-height 1.8, margin-top 20px
+  — 3 mini stats in a horizontal row (margin-top 32px):
+      "15+" / "Daerah Asal" | "200+" / "Petani Mitra" | "Sejak 2020"
+      — Each: Cormorant Garamond 600 36px #B8924A + DM Sans 400 13px #A8886A below
+
+── TESTIMONIALS (bg #FAF7F2, py 80px) ──
+Section heading: "Kata Mereka" — Cormorant Garamond 600 40px centered.
+Subheading: "Lebih dari 10.000 pelanggan setia telah merasakan bedanya." — DM Sans 400 16px #6B4C35 centered.
+
+3 testimonial cards in a row (bg #F0E8D8, rounded 16px, padding 32px):
+Each card:
+  — Large open-quote mark " — Cormorant Garamond 600 80px #B8924A opacity 0.3, positioned top-left of card
+  — Review text: DM Sans 400 italic 16px #1C0A00, line-height 1.8, min 2 lines
+  — Bottom row: avatar circle 44px + name DM Sans 500 14px #1C0A00 + location DM Sans 400 12px #6B4C35 + 5 gold stars right
+  Sample content:
+    Card 1: "Baru kali ini saya menemukan kopi yang aromanya konsisten dari bungkus pertama sampai terakhir. Arabika Gayonya luar biasa!" — Reza M. · Jakarta · ★★★★★
+    Card 2: "Pengirimannya cepat, packagingnya rapi banget. Langsung jadi toko kopi online favorit saya." — Siti N. · Surabaya · ★★★★★
+    Card 3: "Suka banget pilihan gilingannya bisa disesuaikan. Cocok banget buat yang pakai pour over kayak saya." — Dimas A. · Bandung · ★★★★★
+
+── CTA STRIP (full-bleed, bg #B8924A, py 64px) ──
+Centered layout. Max-width 640px centered.
+Heading: "Mulai Perjalanan Kopi\nTerbaik Anda" — Cormorant Garamond 600 48px #FAF7F2, text-align center, line-height 1.1
+Subtext: "Daftar gratis, tidak ada syarat minimum pembelian." — DM Sans 400 16px rgba(250,247,242,0.8), margin-top 12px
+Two buttons side by side (margin-top 32px):
+  Primary: "Daftar Sekarang" — bg #1C0A00, text #F0E8D8, radius 6px → NAVIGATE /daftar
+  Secondary: "Masuk ke Akun" — transparent bg, border 1.5px #F0E8D8, text #F0E8D8 → NAVIGATE /login
+
+── CONTACT / FOOTER SECTION ──
+id="kontak"
+Footer: bg #140C05. 4 columns: Brand (logo + tagline + social icons: Instagram, TikTok, WhatsApp) | Navigasi (Beranda, Produk, Tentang Kami, Blog) | Bantuan (FAQ, Cara Pemesanan, Kebijakan Pengembalian, Hubungi Kami) | Kontak (email: hello@javashop.id, WhatsApp: 0812-xxxx-xxxx, Jam operasional: Sen-Sab 08.00–17.00 WIB).
+Bottom bar: © 2025 JavaShop · "Pembayaran aman via" + Midtrans logo + "Pengiriman oleh" + Biteship logo.
+All footer links: NAVIGATE to respective pages or EXTERNAL to social URLs.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 2 — LOGIN CUSTOMER (/login)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Return users log in as quickly as possible. Minimal friction. Keep the brand's warm premium feel.
+
+LAYOUT: Two-column full-viewport split (no navbar — standalone auth page with own header).
+
+LEFT PANEL (55% width, full height):
+Full-bleed atmospheric coffee photo — close-up of a warm latte art in a ceramic cup, steam wisping, wooden table surface. Warm sepia-toned, editorial quality.
+Dark overlay: linear-gradient from rgba(28,10,0,0.1) top to rgba(28,10,0,0.65) bottom.
+Content overlay (bottom-left anchored, padding 48px):
+  — JavaShop logo (light version — white wordmark + gold bean icon), 28px
+  — Large quote (margin-top auto, padding-bottom 16px):
+      Opening " mark: Cormorant Garamond 600 96px, #B8924A, opacity 0.6
+      Quote text: "Setiap cangkir adalah alasan untuk kembali." — Cormorant Garamond 500 italic 28px, #F0E8D8, max-width 320px, line-height 1.35
+  — Small separator line 40px wide, 1px, #B8924A, margin-top 16px
+  — "— JavaShop, sejak 2020" — DM Sans 400 13px #A8886A
+
+RIGHT PANEL (45% width, bg #FAF7F2, full height, flex center):
+Centered content block, max-width 400px, width 100%, padding 48px 0.
+
+TOP: Small JavaShop logo mark only (coffee bean icon, 32px, #B8924A) + "JavaShop" Cormorant Garamond 600 20px #1C0A00, centered, margin-bottom 32px.
+
+FORM AREA:
+Heading: "Selamat Datang\nKembali" — Cormorant Garamond 600 36px #1C0A00, line-height 1.2, margin-bottom 6px
+Subheading: "Masuk untuk melanjutkan belanja." — DM Sans 400 14px #6B4C35, margin-bottom 32px
+
+Fields (16px gap between):
+  Field 1 — Email:
+    Label: "EMAIL" DM Sans 500 11px uppercase letter-spacing 0.08em #6B4C35
+    Input: full-width, 48px height, border 1.5px #E0D0BB, radius 8px, padding 0 16px, envelope icon left (Phosphor EnvelopeSimple 16px #A8886A)
+    Placeholder: "nama@email.com"
+    Error state: border #C0392B + message below "Format email tidak valid" DM Sans 12px #C0392B
+  
+  Field 2 — Password:
+    Label: "KATA SANDI" — same label style
+    Input: 48px height, same style, lock icon left, eye-toggle icon right (Phosphor Eye / EyeSlash 16px)
+    Placeholder: "Masukkan kata sandi"
+    Error state: "Email atau kata sandi salah" — shown below password field, not on individual fields
+
+  Row below fields: "Ingat saya 30 hari" checkbox left (custom styled, gold check on tick) + "Lupa kata sandi?" right DM Sans 400 14px #B8924A underline → NAVIGATE /auth/lupa-sandi
+
+  "Masuk" primary button: full-width 52px, bg #B8924A, DM Sans 500 14px letter-spacing 0.04em "Masuk"
+    → ACTION: validate + authenticate
+    → Loading state: spinner + "Memproses..."
+    → Success: NAVIGATE / (or redirect param)
+    → Error: inline "Email atau kata sandi salah" below password
+
+DIVIDER: "atau masuk dengan" — thin lines left and right, DM Sans 400 12px #A8886A center
+
+Google button: 52px height, bg #FAF7F2, border 1.5px #E0D0BB, radius 8px, Google logo 20px left-centered, "Lanjutkan dengan Google" DM Sans 400 14px #1C0A00 → EXTERNAL Google OAuth → callback → NAVIGATE /
+
+BOTTOM LINK: "Belum punya akun? " + "Daftar sekarang" — DM Sans 400 14px, link in #B8924A underline → NAVIGATE /daftar
+
+STATES TO SHOW:
+  — Default (empty form)
+  — Error state (wrong credentials — red message below password)
+  — Loading state (button spinner)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 3 — REGISTER / DAFTAR AKUN (/daftar)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: New user creates an account. Welcoming, not intimidating. Only ask what is necessary. Make the form feel lightweight despite having several fields.
+
+LAYOUT: Same two-column split as Login page — but LEFT and RIGHT are SWAPPED (form on left, photo on right) to create visual variety when users navigate between the two pages.
+
+LEFT PANEL (45% width, bg #FAF7F2, full height, flex center):
+Centered content block, max-width 420px, padding 48px 0.
+
+TOP: Logo mark + "JavaShop" centered same as login, margin-bottom 28px.
+
+Heading: "Bergabung dengan\nKami" — Cormorant Garamond 600 36px #1C0A00, line-height 1.2, margin-bottom 6px
+Subheading: "Buat akun gratis dan mulai belanja kopi terbaik Nusantara." — DM Sans 400 14px #6B4C35, margin-bottom 28px
+
+FORM — fields in 16px vertical gap:
+  Field 1 — Nama Lengkap: label "NAMA LENGKAP" · input 48px · user icon left · placeholder "Nama sesuai identitas" · required
+    Error: "Nama wajib diisi"
+
+  Row of 2 fields side-by-side (48/52 split, 12px gap):
+    Field 2a — Email: label "EMAIL" · envelope icon · placeholder "nama@email.com" · required
+      Error: "Format email tidak valid" or "Email sudah terdaftar" (different messages)
+    Field 2b — No. Telepon: label "NO. TELEPON" · phone icon left · "+62" prefix shown in input (gray, non-editable) · placeholder "812-xxxx-xxxx" · required
+      Error: "Format nomor tidak valid"
+
+  Field 3 — Kata Sandi: label "KATA SANDI" · lock icon left · eye-toggle right · placeholder "Minimal 8 karakter" · required
+    Below input: password strength bar (full-width, 4px height, rounded, transitions: 25% red → 50% amber → 75% sage → 100% green) + label text that changes: "Lemah" / "Cukup" / "Kuat" / "Sangat Kuat" — DM Sans 12px matching strength color
+    Error: "Kata sandi minimal 8 karakter"
+
+  Field 4 — Konfirmasi Kata Sandi: label "KONFIRMASI KATA SANDI" · same style · check icon appears right when matched (green Phosphor Check)
+    Error: "Konfirmasi kata sandi tidak cocok"
+
+  Checkbox row: custom styled checkbox (gold accent) + "Saya menyetujui " + "Syarat & Ketentuan" (link #B8924A → NAVIGATE /syarat) + " dan " + "Kebijakan Privasi" (link #B8924A → NAVIGATE /privasi) — DM Sans 400 13px
+    Error state (if unchecked on submit): checkbox border turns red + small red text "Anda harus menyetujui syarat dan ketentuan"
+
+  "Buat Akun" primary button: full-width 52px, bg #B8924A
+    → ACTION: validate all fields → IF valid: create account → NAVIGATE / with welcome toast "Selamat datang di JavaShop, [nama]! ☕"
+    → Loading: spinner + "Membuat akun..."
+    → Error: show field-level errors inline
+
+DIVIDER: "atau daftar dengan" — same style as login
+Google OAuth button — same style as login → EXTERNAL Google OAuth
+
+BOTTOM LINK: "Sudah punya akun? " + "Masuk di sini" → NAVIGATE /login
+
+RIGHT PANEL (55% width, full height):
+Photo panel — different photo from login: overhead flat-lay of multiple coffee bags on dark wood surface, moody natural light. Overlay gradient rgba(28,10,0,0.15) top to rgba(28,10,0,0.6) bottom.
+Content overlay bottom-left (padding 48px):
+  — JavaShop logo light version
+  — Benefit list (3 rows, margin-top auto):
+    Each row: gold checkmark circle 20px + DM Sans 400 14px #F0E8D8 text
+    ✓ "Akses ke 500+ produk kopi pilihan"
+    ✓ "Lacak pesanan secara real-time"  
+    ✓ "Simpan alamat & metode bayar favorit"
+  — "Bergabung gratis · Tidak ada biaya tersembunyi" — DM Sans 400 12px #A8886A, margin-top 20px
+
+STATES TO SHOW:
+  — Default (empty form)
+  — Inline validation errors (all field errors at once on failed submit)
+  — Password strength bar at 75% "Kuat" state
+  — Field 4 with green check (passwords match)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 4 — ADMIN LOGIN (/admin/login)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Strictly internal. Only JavaShop admin staff access this. Design must feel secure, professional, and clearly separated from the customer-facing brand. Darker, more utilitarian — but still on-brand.
+
+IMPORTANT NOTES:
+  — This page is NOT linked from the customer website. Accessed directly at /admin/login.
+  — Do NOT show "Daftar" or "Lupa Kata Sandi" social login options. Admin accounts are created manually.
+  — The feel should be: quiet confidence, security, authority. Not cold/clinical.
+
+LAYOUT: Single centered card layout (NOT split-column). Full-page bg: #140C05 (deep espresso dark) with very subtle repeating pattern — tiny coffee bean motif at 4% opacity in #1E1109, tiled across background. Creates depth without distraction.
+
+CENTER CARD (width 420px, auto height, bg #1E1109, rounded 20px, padding 48px, shadow 0 32px 80px rgba(0,0,0,0.5), border 1px solid #3A2516):
+Absolutely centered on page (flexbox, min-height 100vh).
+
+TOP of card:
+  — JavaShop logo mark icon (coffee bean, 40px) in #B8924A, centered
+  — "JavaShop" — Cormorant Garamond 600 22px #F0E8D8, centered, margin-top 8px
+  — Thin gold divider line 48px centered, 1px, #B8924A, margin 20px auto
+  — "Admin Panel" — DM Sans 500 12px uppercase letter-spacing 0.12em #A8886A, centered
+  — "Masuk ke Dashboard" — DM Sans 400 14px #6B4C35 wait no — use dark theme: #A8886A, centered, margin-top 4px
+
+FORM (margin-top 32px):
+  Field 1 — Email Admin:
+    Label: "EMAIL" — DM Sans 500 11px uppercase letter-spacing 0.08em #A8886A
+    Input: full-width 48px height, bg #140C05, border 1.5px #3A2516, radius 8px, text #F0E8D8, padding 0 16px 0 44px, placeholder "admin@javashop.id" in #6B4C35
+    Envelope icon: Phosphor EnvelopeSimple 16px #6B4C35 inside left
+    Focus state: border #B8924A, glow shadow 0 0 0 3px rgba(184,146,74,0.15)
+    Error: border #C0392B + error message in #C0392B below
+
+  Field 2 — Password:
+    Same dark style, lock icon left, eye-toggle right in #6B4C35
+    Focus same gold effect
+    Error: "Email atau kata sandi salah" — shown below this field only (don't reveal which is wrong for security)
+
+  "Masuk sebagai Admin" button: full-width 52px height, bg #B8924A, text #FAF7F2 DM Sans 500 14px letter-spacing 0.04em, radius 8px, margin-top 24px
+    → ACTION: validate → authenticate with admin role check
+    → IF not admin role: reject even if credentials match → show "Akun ini tidak memiliki akses admin"
+    → Loading: spinner + "Memverifikasi..."
+    → Success: NAVIGATE /admin (dashboard)
+    → Error: inline error message, rate limiting warning after 3 failed attempts
+
+SECURITY NOTE at bottom of card:
+Small padlock icon + "Halaman ini hanya untuk staff JavaShop yang berwenang." — DM Sans 400 12px #6B4C35, centered, margin-top 24px.
+
+BELOW THE CARD:
+"← Kembali ke website" — DM Sans 400 13px #6B4C35, centered, underline on hover #A8886A → NAVIGATE /
+
+STATES TO SHOW:
+  — Default (dark, empty)
+  — Focus state on email (gold border + glow on dark bg)
+  — Error state (wrong credentials message)
+  — Rate limit state: after 3 failed attempts, show warning banner above button: "Terlalu banyak percobaan. Coba lagi dalam 5 menit." in amber
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 5 — LUPA KATA SANDI (/auth/lupa-sandi)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: User forgot their password. Make this as simple and reassuring as possible — 2 states: input email → success confirmation. No friction, no confusion.
+
+LAYOUT: Same two-column split as Login (photo left, form right) but SIMPLIFIED — only the form content is different.
+
+LEFT PANEL: Same warm coffee photo treatment as Login page (reuse composition). Different copy overlay:
+  — Quote: "Jangan khawatir.\nKami bantu Anda\nkembali." — Cormorant Garamond 500 italic 32px #F0E8D8, line-height 1.3
+
+RIGHT PANEL: Same bg #FAF7F2, centered content, max-width 400px.
+
+── STATE A — INPUT EMAIL (default state) ──
+Logo mark + "JavaShop" same as login.
+
+Heading: "Lupa Kata Sandi?" — Cormorant Garamond 600 36px #1C0A00
+Subheading: "Masukkan email yang terdaftar. Kami akan kirimkan tautan untuk mengatur ulang kata sandi Anda." — DM Sans 400 14px #6B4C35, line-height 1.7, margin-bottom 28px
+
+Field — Email:
+  Label: "EMAIL TERDAFTAR" — same label style
+  Input: full-width 48px, same style, envelope icon left
+  Placeholder: "nama@email.com"
+  Error: "Email ini tidak terdaftar di JavaShop" (only after submit)
+
+"Kirim Tautan Reset" button: full-width 52px primary gold
+  → ACTION: validate email → IF found: send reset email → STATE B shown / IF not found: inline error
+
+Back link: "← Kembali ke halaman masuk" — DM Sans 400 14px #B8924A → NAVIGATE /login, margin-top 16px, centered
+
+── STATE B — EMAIL TERKIRIM (show as second frame beside State A) ──
+Replace the form with this confirmation content (same panel, animated swap):
+
+Icon: Large email envelope illustration — simple flat line art, 80×80px, stroke #B8924A on transparent.
+
+Heading: "Cek Email Anda!" — Cormorant Garamond 600 36px #1C0A00
+Message: "Kami telah mengirimkan tautan reset kata sandi ke:" — DM Sans 400 14px #6B4C35
+Email shown: "budi@email.com" — DM Sans 500 16px #1C0A00, bg #F0E8D8 rounded 8px padding 10px 16px, centered, margin 12px 0
+
+Info text: "Tautan akan kedaluwarsa dalam 30 menit. Periksa juga folder Spam jika tidak menemukan email tersebut." — DM Sans 400 13px #6B4C35, line-height 1.7
+
+"Kirim Ulang Email" ghost button: transparent, border 1.5px #B8924A, text #B8924A, full-width
+  → ACTION: resend email → shows "Email dikirim ulang!" success toast → button becomes disabled 60s with countdown "Kirim ulang (58s)"
+
+"← Kembali ke halaman masuk" link — same as before → NAVIGATE /login
+
+
+════════════════════════════════════════
+ANNOTATION & COMPONENT INSTRUCTIONS
+════════════════════════════════════════
+
+For every interactive element in every page, add a small Figma annotation label (sticky note style, yellow background) showing: element name → action → destination. Place annotations outside the frame boundary so they don't clutter the design but remain attached to their element.
+
+Every button, form field, and card must include a Figma component description note specifying: purpose, trigger event, expected outcome, and all visible states (default/hover/active/disabled/loading/error/success).

@@ -1,0 +1,391 @@
+Before designing any page in this batch, internalize this complete JavaShop sitemap. Every element you place must resolve to one of these destinations or actions. No orphan elements allowed.
+
+═══════════════════════════════════════
+JAVASHOP — SITEMAP & URL STRUCTURE
+═══════════════════════════════════════
+PUBLIC PAGES (accessible without login):
+  /                          → Beranda (Home)
+  /produk                    → Katalog Produk
+  /produk?kategori=[slug]    → Katalog filtered by category
+  /produk?q=[query]          → Katalog search results
+  /produk/[slug]             → Detail Produk
+  /login                     → Halaman Login
+  /daftar                    → Halaman Register
+  /auth/lupa-sandi           → Lupa Kata Sandi
+  /auth/reset-sandi          → Reset Kata Sandi
+
+CUSTOMER PRIVATE PAGES (requires login, redirect to /login?redirect=[page] if not):
+  /keranjang                 → Keranjang Belanja
+  /checkout                  → Halaman Checkout
+  /checkout/pembayaran       → Halaman Pembayaran (Midtrans / upload bukti)
+  /pesanan/berhasil          → Order Success / Konfirmasi
+  /akun                      → Profil Saya
+  /akun/pesanan              → Riwayat Pesanan
+  /akun/pesanan/[order-id]   → Detail Pesanan & Tracking
+  /akun/wishlist             → Wishlist
+  /akun/ulasan               → Ulasan Saya
+  /akun/notifikasi           → Notifikasi
+  /akun/alamat               → Kelola Alamat
+  /akun/ubah-sandi           → Ubah Kata Sandi
+
+ADMIN PAGES (requires admin role):
+  /admin                     → Admin Dashboard
+  /admin/produk              → Daftar Produk
+  /admin/produk/tambah       → Form Tambah Produk
+  /admin/produk/[id]/edit    → Form Edit Produk
+  /admin/pesanan             → Daftar Pesanan
+  /admin/pesanan/[id]        → Detail Pesanan Admin
+  /admin/pembayaran          → Konfirmasi Pembayaran
+  /admin/voucher             → Daftar Voucher
+  /admin/pengguna            → Daftar Pengguna
+  /admin/ulasan              → Moderasi Ulasan
+  /admin/laporan             → Laporan Penjualan
+
+EXTERNAL SERVICES:
+  Midtrans payment page      → https://app.midtrans.com/...
+  Biteship tracking          → https://biteship.com/tracking/[resi]
+
+
+═══════════════════════════════════════
+BATCH PROMPT — 5 HALAMAN AKUN CUSTOMER
+═══════════════════════════════════════
+
+Design 5 account pages for JavaShop. Same design system. These pages all share a consistent ACCOUNT SIDEBAR LAYOUT. All require login — IF not logged in → NAVIGATE /login?redirect=[current-page].
+
+SHARED ACCOUNT LAYOUT:
+All 5 pages use a consistent 2-column layout: Left sidebar (260px) + right content area (remaining width). Outer background #FAF7F2. Same navbar at top (refer to previous batch for navbar spec).
+
+SIDEBAR (260px, sticky, bg #F0E8D8, rounded 16px, padding 24px, self-height fit):
+Top: User avatar circle (64px, soft shadow, initials or photo) + name "Budi Santoso" Cormorant Garamond 600 20px + email "budi@email.com" DM Sans 12px #6B4C35.
+Divider #E0D0BB.
+Navigation menu — each item is a row (36px height, rounded 8px, DM Sans 400 14px, Phosphor icon 16px left):
+  User icon — "Profil Saya" → NAVIGATE /akun
+  Package icon — "Riwayat Pesanan" + count badge (IF pending orders > 0) → NAVIGATE /akun/pesanan
+  Heart icon — "Wishlist" → NAVIGATE /akun/wishlist
+  Star icon — "Ulasan Saya" → NAVIGATE /akun/ulasan
+  Bell icon — "Notifikasi" + unread dot (IF unread > 0, gold dot 8px) → NAVIGATE /akun/notifikasi
+  MapPin icon — "Alamat" → NAVIGATE /akun/alamat
+  Lock icon — "Ubah Kata Sandi" → NAVIGATE /akun/ubah-sandi
+
+Active item: bg #B8924A, text #FAF7F2, icon #FAF7F2.
+Hover (non-active): bg #E0D0BB.
+Divider.
+
+  [Element: 'Keluar' ghost link]
+  Style: Ghost link with logout icon, #C0392B color, DM Sans 400 14px
+  Behavior: → ACTION show confirm dialog "Yakin ingin keluar dari akun Anda?" → IF confirmed: ACTION clear session → NAVIGATE / / IF cancelled: dismiss dialog
+  States: Default (#C0392B) → Hover (underline)
+  Annotation: 'ACTION → confirm → clear session → NAVIGATE /'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 11 — PROFIL SAYA (/akun)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Let the user view and edit their personal information and manage saved addresses. Simple, clean, trustworthy.
+
+Right content: heading "Profil Saya" H2 Cormorant Garamond 600 32px.
+
+TOP STATS ROW (3 stat cards, bg #F0E8D8, rounded 12px, equal width, padding 20px):
+  Card 1: Package icon 24px gold + "12" Cormorant Garamond 600 28px + "Pesanan" DM Sans 12px #6B4C35 → NAVIGATE /akun/pesanan on click
+  Card 2: Star icon + "3" + "Ulasan" → NAVIGATE /akun/ulasan on click
+  Card 3: CreditCard icon + "Rp 1.245.000" + "Total Belanja" (no click)
+
+PROFILE FORM CARD (rounded 16px, bg #F0E8D8, padding 32px, margin-top 24px):
+Left column (avatar section):
+  Large avatar 120×120px circle, shadow 0 4px 12px rgba(28,10,0,0.1)
+
+  [Element: 'Ubah Foto' text link]
+  Style: DM Sans 400 14px #B8924A, underline on hover. "Maks 2MB, JPG/PNG" hint below in DM Sans 12px #A8886A
+  Behavior: → ACTION file picker opens → IF valid image: upload + avatar preview updates / IF too large: error "Ukuran file maksimal 2MB" / IF wrong format: error "Format tidak didukung"
+  Annotation: 'ACTION → file picker → update avatar'
+
+Right column (form, 2-column grid, 16px gap):
+
+  [Element: Nama Lengkap field]
+  Style: Label "NAMA LENGKAP" (required *), input 48px, Phosphor User icon left
+  Value: "Budi Santoso" (pre-filled)
+  States: Filled → Focus (gold border) → Error ("Nama wajib diisi" if cleared)
+  
+  [Element: Email field]
+  Style: Label "EMAIL" + "Terverifikasi" sage green badge #7A9468 beside label
+  Value: "budi@email.com" (pre-filled, read-only, bg #FAF7F2)
+  Note: Email cannot be changed — show tooltip "Hubungi CS untuk mengubah email" on hover over the disabled field
+
+  [Element: No. Telepon field]
+  Style: Label "NO. TELEPON", Phosphor Phone icon left, "+62" prefix
+  Value: "812-3456-7890"
+  States: Filled → Focus → Error ("Format nomor tidak valid")
+
+  [Element: Tanggal Lahir field]
+  Style: Label "TANGGAL LAHIR", date input with calendar icon
+  States: Empty → Filled → Focus
+
+  [Element: Jenis Kelamin radio pills]
+  Style: Label "JENIS KELAMIN", 3 radio pills inline
+  Options: "Laki-laki" | "Perempuan" | "Prefer tidak menjawab"
+  States: Unselected (border #E0D0BB) → Selected (bg #B8924A, text #FAF7F2)
+
+  [Element: Tombol 'Simpan Perubahan']
+  Style: Primary gold button, padding 14px 28px, bottom right of form
+  Behavior: → ACTION validate all fields → IF valid: save changes → success toast "Profil berhasil diperbarui!" 3 detik / IF invalid: show field-level errors
+  States: Default → Hover → Loading (spinner + "Menyimpan...") → Disabled (if no changes made, bg #E0D0BB)
+  Annotation: 'ACTION → validate → save profile → success toast'
+
+── ADDRESS SECTION BELOW ──
+Heading "Daftar Alamat" Cormorant Garamond 500 24px, margin-top 40px.
+
+Saved address cards (rounded 12px, bg #F0E8D8, padding 20px, 16px gap between):
+Each card:
+  — Label badge "Rumah" / "Kantor" in DM Sans 500 12px, pill bg #FAF7F2
+  — Recipient name DM Sans 500 14px + phone DM Sans 400 14px #6B4C35
+  — Full address DM Sans 400 14px
+  — "Alamat Utama" gold badge (if primary)
+
+  [Element: 'Ubah' link on address card]
+  Style: DM Sans 400 14px #B8924A
+  Behavior: → STATE address edit form opens inline in that card / or modal
+  Annotation: 'STATE → edit address form'
+
+  [Element: 'Hapus' link on address card]
+  Style: DM Sans 400 14px #C0392B
+  Behavior: → ACTION confirm dialog "Hapus alamat ini?" → IF confirmed: delete → card removed with fade-out / IF cancelled: dismiss. IF this is the only address: error "Minimal 1 alamat harus tersimpan"
+  Annotation: 'ACTION → confirm → delete address'
+
+  [Element: '+ Tambah Alamat' dashed card]
+  Style: Dashed border 2px #E0D0BB, rounded 12px, + icon centered, DM Sans 400 14px #6B4C35
+  Behavior: → STATE new address form expands below / or modal with same fields as checkout address form (Nama, Telepon, Provinsi, Kota, Kecamatan, Kode Pos, Alamat Lengkap, Label) + "Simpan Alamat" primary + "Batal" ghost
+  Annotation: 'STATE → expand new address form'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 12 — RIWAYAT PESANAN (/akun/pesanan)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Let users quickly find and manage their orders by status. Provide clear next actions for each order state (pay, track, review, reorder).
+
+Right content: heading "Riwayat Pesanan" H2 Cormorant Garamond 600 32px.
+
+  [Element: Filter tab pills]
+  Style: Horizontal pill tabs, DM Sans 500 14px, rounded 20px
+  Options: "Semua" | "Menunggu Bayar" | "Diproses" | "Dikirim" | "Selesai" | "Dibatalkan"
+  Behavior: → STATE order list filters to selected status
+  States: Inactive (bg #FAF7F2, border #E0D0BB, text #6B4C35) → Active (bg #B8924A, text #FAF7F2)
+  Annotation: 'STATE → filter orders by status'
+
+  [Element: Search bar]
+  Style: Full-width input "Cari pesanan (no. pesanan / produk)..." Phosphor MagnifyingGlass icon left
+  Behavior: → On Enter or typing: STATE list filters by search term
+  States: Empty → Focus (gold border) → Filled
+
+ORDER LIST (stacked cards, each rounded 12px, bg #F0E8D8, padding 20px 24px, 16px gap):
+Each order card:
+  — Top row: Order number "#JVS-20251208-0042" DM Sans Mono 14px left + date "8 Des 2025" DM Sans 12px #6B4C35 + status badge right (color-coded per Design System)
+  — Divider #E0D0BB
+  — Product row: up to 3 thumbnails (40×40px, rounded 6px) + "+2 produk lainnya" if more + compact product names DM Sans 14px
+  — Bottom row:
+    Left: total amount "Rp 267.000" DM Sans 600 16px #B8924A
+    Right: action buttons depending on status:
+
+  [Element: Tombol 'Lihat Detail']
+  Show: Always
+  Style: Secondary button, border #B8924A, DM Sans 500 13px
+  Behavior: → NAVIGATE /akun/pesanan/[order-id]
+  Annotation: 'NAVIGATE /akun/pesanan/[order-id]'
+
+  [Element: Tombol 'Bayar Sekarang']
+  Show: IF status = "Menunggu Bayar"
+  Style: Primary gold button, DM Sans 500 13px, amber urgency
+  Behavior: → NAVIGATE /checkout/pembayaran?order=[order-id]
+  Annotation: 'NAVIGATE /checkout/pembayaran?order=[order-id]'
+
+  [Element: Tombol 'Tulis Ulasan']
+  Show: IF status = "Selesai" AND has unreviewed items
+  Style: Ghost button, DM Sans 400 13px #B8924A
+  Behavior: → NAVIGATE /akun/ulasan#[order-id]
+  Annotation: 'NAVIGATE /akun/ulasan#[order-id]'
+
+  [Element: Tombol 'Beli Lagi']
+  Show: IF status = "Selesai" OR "Dibatalkan"
+  Style: Ghost button, DM Sans 400 13px #6B4C35
+  Behavior: → ACTION re-add all items from that order to cart → NAVIGATE /keranjang → toast "Produk ditambahkan ke keranjang!"
+  Annotation: 'ACTION → re-add to cart → NAVIGATE /keranjang'
+
+Pagination at bottom: numbered pages + arrows (same as catalog pagination spec).
+
+── EMPTY STATE ──
+Show when user has zero orders:
+  Empty box illustration (line art, stroke #B8924A) + "Belum ada pesanan" Cormorant Garamond 500 24px + "Yuk mulai belanja kopi terbaik!" DM Sans 14px #6B4C35
+  [Element: Tombol 'Mulai Belanja']
+  Style: Primary gold button
+  Behavior: → NAVIGATE /produk
+  Annotation: 'NAVIGATE /produk'
+
+LOADING STATE: Skeleton shimmer (warm beige) for 3 order card placeholders.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 13 — WISHLIST (/akun/wishlist)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Show all saved/wishlisted products. Make it easy to move items to cart or remove them. This is a high-intent page — users here already expressed interest.
+
+Right content: heading "Wishlist Saya" H2 Cormorant Garamond 600 32px + "12 produk" count DM Sans 14px #6B4C35 beside heading.
+
+  [Element: Sort tab group]
+  Options: "Terbaru" | "Harga Termurah" | "Nama A-Z"
+  Style: Small tab pills, DM Sans 14px
+  Behavior: → STATE product grid reorders by selected sort
+  States: Inactive → Active (gold underline)
+  Annotation: 'STATE → reorder wishlist'
+
+PRODUCT GRID: 3 columns, 24px gap. Same product cards as catalog style, with these differences:
+
+  [Element: Heart/Wishlist icon on card]
+  Style: Filled solid gold heart (since already in wishlist), Phosphor HeartFill 20px #B8924A
+  Behavior: → ACTION show confirm "Hapus dari wishlist?" → IF confirmed: remove from wishlist → card removed with fade-out / IF cancelled: dismiss
+  States: Active (filled gold) → Hover (tooltip "Hapus dari Wishlist", scale 1.1)
+  Annotation: 'ACTION → confirm → remove from wishlist'
+
+  [Element: Tombol 'Tambah ke Keranjang' on card]
+  Show: Visible always (without hover, since this is a wishlist intent page)
+  Style: Primary gold button, DM Sans 500 13px, full-width bottom of card
+  Behavior:
+    - IF in stock: ACTION POST /cart/add → cart counter +1, success toast "Ditambahkan ke keranjang!" 3 detik
+    - IF stock = 0: button DISABLED, text changes to "Habis"
+  Annotation: 'ACTION → POST /cart/add + toast'
+
+  IF product out of stock: card shows "Habis" badge (bg #C0392B text #FAF7F2) top-left + disabled cart button + ghost link below:
+
+  [Element: 'Beritahu Saya' ghost link]
+  Show: IF stock = 0
+  Style: Ghost link, DM Sans 400 13px #B8924A, underline
+  Behavior: → ACTION subscribe to stock notification → link changes to "Anda akan diberitahu" disabled text + checkmark
+  Annotation: 'ACTION → subscribe stock notification'
+
+Each card on click (on image/name area) → NAVIGATE /produk/[slug]
+
+  [Element: 'Hapus Semua' ghost danger link]
+  Style: Ghost link, DM Sans 400 14px #C0392B, bottom of page
+  Behavior: → ACTION confirm dialog "Hapus semua produk dari wishlist?" → IF confirmed: clear all → empty state shown / IF cancelled: dismiss
+  Annotation: 'ACTION → confirm → clear entire wishlist'
+
+── EMPTY STATE ──
+  Coffee heart illustration (line art, #B8924A) + "Wishlist kamu masih kosong" Cormorant Garamond 500 24px + "Temukan kopi favoritmu!" DM Sans 14px #6B4C35
+  [Element: Tombol 'Jelajahi Produk']
+  Behavior: → NAVIGATE /produk
+  Annotation: 'NAVIGATE /produk'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 14 — TULIS ULASAN (/akun/ulasan)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Encourage users to leave product reviews for completed orders. Make the review form simple and inline — no separate page needed per product.
+
+Right content: heading "Ulasan Saya" H2 Cormorant Garamond 600 32px.
+
+TWO SECTIONS with divider between:
+
+── SECTION: "Perlu Diulas" ──
+Subheading: "Perlu Diulas" DM Sans 500 18px + count badge "3 produk" in gold pill.
+
+For each completed order item awaiting review — a review prompt card (rounded 12px, bg #F0E8D8, padding 24px, 16px gap):
+Left: product thumbnail 80×80px rounded 8px (→ NAVIGATE /produk/[slug] on click) + name Cormorant Garamond 500 18px + variant "250g · Medium" DM Sans 12px #6B4C35 + order date + order number DM Sans 12px #A8886A.
+Right: inline review form:
+
+  [Element: Star rating interactive]
+  Style: 5 stars, 24px each, inline, "Beri rating:" label above
+  Behavior: → Click to select rating 1-5 → STATE stars fill up to selected number in gold. Hover shows preview fill.
+  States: Empty (all outline #E0D0BB) → Hover preview (partial fill) → Selected (1-5 filled gold #B8924A)
+  Annotation: 'STATE → select rating 1-5'
+
+  [Element: Review textarea]
+  Style: "Tulis ulasanmu tentang produk ini..." placeholder, 100px height, 400px wide, border #E0D0BB
+  States: Empty → Focus (gold border + glow) → Filled → Error ("Ulasan minimal 10 karakter")
+
+  [Element: Photo upload zone]
+  Style: Small dashed upload box 80×80px, Phosphor Camera icon, "Foto (opsional)" DM Sans 12px
+  Behavior: → ACTION file picker → IF valid: small preview thumbnail appears, × to remove / IF too large: error "Maks 5MB"
+  States: Empty (dashed) → Drag-over (gold border) → Uploaded (preview + ×)
+  Annotation: 'ACTION → upload review photo (optional)'
+
+  [Element: Tombol 'Kirim Ulasan']
+  Style: Primary gold button small, DM Sans 500 13px
+  Behavior: → ACTION validate (rating required, text optional but min 10 chars if entered) → IF valid: submit review → card moves to "Sudah Diulas" section with slide animation + toast "Ulasan terkirim! Terima kasih." / IF invalid: show errors
+  States: Default → Loading (spinner) → Disabled (if no rating selected, bg #E0D0BB)
+  Annotation: 'ACTION → submit review → move to Sudah Diulas'
+
+── SECTION: "Sudah Diulas" ──
+Subheading: "Sudah Diulas" DM Sans 500 18px.
+
+Each reviewed product as compact card (rounded 12px, bg #F0E8D8, padding 20px):
+  Thumbnail 60×60px + name DM Sans 500 14px + posted date DM Sans 12px #A8886A + star rating (filled gold, read-only) + excerpt of review text DM Sans 400 14px (max 2 lines)
+
+  [Element: 'Edit Ulasan' ghost link]
+  Style: DM Sans 400 13px #B8924A
+  Behavior: → STATE card expands into editable review form (same as "Perlu Diulas" form, pre-filled with existing review) + "Simpan Perubahan" + "Batal"
+  Annotation: 'STATE → expand edit review form'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE 15 — NOTIFIKASI (/akun/notifikasi)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTENT: Show all notifications organized by type. Let users quickly see what needs attention (unread) and navigate to relevant pages.
+
+Right content: heading "Notifikasi" H2 Cormorant Garamond 600 32px.
+
+  [Element: 'Tandai Semua Dibaca' ghost link]
+  Style: DM Sans 400 14px #B8924A, top-right, underline on hover
+  Behavior: → ACTION mark all notifications as read → all unread dots disappear → link becomes disabled text "Semua sudah dibaca" in #A8886A
+  Annotation: 'ACTION → mark all as read'
+
+  [Element: Filter pills]
+  Options: "Semua" | "Pesanan" | "Pembayaran" | "Promo"
+  Style: Pill tabs, DM Sans 14px
+  Behavior: → STATE notification list filters by category
+  States: Inactive → Active (bg #B8924A, text #FAF7F2)
+  Annotation: 'STATE → filter notifications by type'
+
+NOTIFICATION LIST (stacked, no card borders — separated by thin dividers #E0D0BB):
+Each notification row (padding 16px 0):
+  — Left: icon circle 40px (Phosphor icon centered):
+    Package icon — bg rgba(184,146,74,0.12) for order notifications
+    CreditCard icon — bg rgba(12,68,124,0.1) for payment notifications
+    Gift icon — bg rgba(122,148,104,0.12) for promo notifications
+    Check icon — bg rgba(39,102,74,0.1) for completion notifications
+  — Content: title DM Sans 500 14px #1C0A00 + description DM Sans 400 13px #6B4C35 (2 lines max) + timestamp DM Sans 12px #A8886A ("1 jam lalu", "3 hari lalu")
+  — Right: unread dot 8px circle #B8924A (if unread)
+  — Unread rows: bg #F0E8D8. Read rows: bg transparent (#FAF7F2).
+
+  [Element: Notification row click]
+  Behavior: → ACTION mark as read (dot disappears, bg changes) + NAVIGATE to related page:
+    Order notifications → NAVIGATE /akun/pesanan/[order-id]
+    Payment notifications → NAVIGATE /akun/pesanan/[order-id]
+    Promo notifications → NAVIGATE /produk?promo=[promo-slug] or relevant promo page
+  States: Unread (bg #F0E8D8, unread dot) → Read (bg transparent) → Hover (bg #F0E8D8, cursor pointer)
+  Annotation: 'ACTION → mark read → NAVIGATE /akun/pesanan/[id] or relevant page'
+
+Sample notifications:
+1. "Pesanan #JVS-0042 sedang dikirim" — Package icon amber — "JNE telah menjemput paketmu. Estimasi tiba 2–3 hari." — 1 jam lalu — UNREAD
+2. "Pembayaran dikonfirmasi" — CreditCard icon blue — "Pembayaran Rp 267.000 telah dikonfirmasi admin." — 3 jam lalu — UNREAD
+3. "Promo Akhir Tahun! 🎁" — Gift icon sage — "Diskon 20% untuk semua produk Arabika hingga 31 Desember." — 1 hari lalu — READ
+4. "Pesananmu telah diterima" — Check icon green — "Jangan lupa tinggalkan ulasan ya!" — 3 hari lalu — READ
+
+── EMPTY STATE ──
+  Bell illustration (line art, stroke #B8924A) + "Belum ada notifikasi" Cormorant Garamond 500 24px + "Notifikasi pesanan, pembayaran, dan promo akan muncul di sini." DM Sans 14px #6B4C35
+  [Element: Tombol 'Mulai Belanja']
+  Behavior: → NAVIGATE /produk
+  Annotation: 'NAVIGATE /produk'
+
+LOADING STATE: Skeleton shimmer for 4 notification row placeholders.
+
+
+════════════════════════════════════════
+ANNOTATION & COMPONENT INSTRUCTIONS
+════════════════════════════════════════
+
+For every interactive element in every page, add a small Figma annotation label (sticky note style, yellow background) showing: element name → action → destination. Place annotations outside the frame boundary so they don't clutter the design but remain attached to their element.
+
+Every button, form field, and card must include a Figma component description note specifying: purpose, trigger event, expected outcome, and all visible states (default/hover/active/disabled/loading/error/success).
